@@ -809,6 +809,30 @@
 
     <div class="menu-card" data-cat="cupcakes">
       <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">☕</span>
+      <h3>Tiramisu Tub</h3>
+      <p>Classic Italian layers of espresso-soaked ladyfingers and silky mascarpone cream, dusted with rich cocoa. Ready to scoop and share.</p>
+      <div style="display:flex; gap:0.6rem; margin-bottom:0.8rem; flex-wrap:wrap;">
+        <div onclick="selectTiramisu(this, 'small')"
+            style="flex:1; min-width:100px; border:1.5px solid var(--border); border-radius:8px; padding:0.7rem; text-align:center; cursor:pointer; transition:all 0.2s;"
+            class="tira-option">
+          <span style="font-family:'Playfair Display',serif; font-size:1rem; color:var(--dark-brown);">Small</span>
+          <div style="font-size:0.78rem; color:var(--muted);">250ml · 1–2 servings</div>
+          <div style="color:var(--terracotta); font-family:'Cormorant Garamond',serif; font-size:1.1rem;">$14</div>
+        </div>
+        <div onclick="selectTiramisu(this, 'medium')"
+            style="flex:1; min-width:100px; border:1.5px solid var(--border); border-radius:8px; padding:0.7rem; text-align:center; cursor:pointer; transition:all 0.2s;"
+            class="tira-option">
+          <span style="font-family:'Playfair Display',serif; font-size:1rem; color:var(--dark-brown);">Medium</span>
+          <div style="font-size:0.78rem; color:var(--muted);">500ml · 3–4 servings</div>
+          <div style="color:var(--terracotta); font-family:'Cormorant Garamond',serif; font-size:1.1rem;">$24</div>
+        </div>
+      </div>
+      <span class="price" id="tiramisuPrice">Select a size above</span>
+    </div>
+
+    <div class="menu-card" data-cat="cupcakes">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
       <span class="emoji">🌾</span>
       <h3>Oat Flour Cupcakes</h3>
       <p>Tender oat flour cupcakes with honey cream cheese frosting. Nourishing and delicious. Box of 6.</p>
@@ -937,6 +961,7 @@
     <div class="form-group">
       <label>Cake Flavour</label>
       <select id="flavourSelect" onchange="updateTotal()">
+        <option value="47,67">Tiramisu Cake — 6″ $57 / 9″ $77</option>
         <option value="42,62">Classic Vanilla — 6″ $42 / 9″ $62</option>
         <option value="45,65">Dark Chocolate Fudge — 6″ $45 / 9″ $65</option>
         <option value="48,68">Oat Flour Vanilla — 6″ $48 / 9″ $68</option>
@@ -1015,7 +1040,7 @@
 
   <div class="order-wrapper">
     <div class="dispatch-note">
-      📦 Orders placed before <strong>3 PM</strong> are dispatched the following day. You'll receive a confirmation email with your tracking info.
+      📦 Orders placed before <strong>3 PM</strong> are dispatched the following day(next-day). You'll receive a confirmation email with your tracking info.
     </div>
 
     <div class="order-items" id="orderItems"></div>
@@ -1120,6 +1145,17 @@
     const price = selectedSize === 6 ? parseFloat(flavour[0]) : parseFloat(flavour[1]);
     const delivery = document.getElementById('deliveryType') && document.getElementById('deliveryType').value === 'delivery' ? 8 : 0;
     document.getElementById('bookTotal').textContent = '$' + (price + delivery).toFixed(2);
+  }
+  
+  function selectTiramisu(el, size) {
+    document.querySelectorAll('.tira-option').forEach(o => {
+      o.style.borderColor = 'var(--border)';
+      o.style.background = 'transparent';
+    });
+    el.style.borderColor = 'var(--terracotta)';
+    el.style.background = '#fde8d8';
+    document.getElementById('tiramisuPrice').textContent =
+      size === 'small' ? '$14 — 250ml tub' : '$24 — 500ml tub';
   }
 
   function updateSlots() {
