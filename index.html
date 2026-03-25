@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crumb & Co. — Vancouver Baked Goods</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #fdf6ec;
+      --parchment: #f5e9d4;
+      --warm-brown: #6b3f2a;
+      --dark-brown: #3b1f10;
+      --terracotta: #c05e3c;
+      --gold: #c99a3b;
+      --muted: #8a6d58;
+      --text: #2e1a0e;
+      --card-bg: #fffaf3;
+      --border: #e2cdb4;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(253, 246, 236, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--warm-brown);
+      letter-spacing: 0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--terracotta); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      background: linear-gradient(160deg, var(--parchment) 0%, var(--cream) 60%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 80px;
+      background: linear-gradient(to bottom, transparent, var(--cream));
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      border: 1px solid var(--terracotta);
+      border-radius: 100px;
+      padding: 0.4rem 1.2rem;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.2rem, 8vw, 6.5rem);
+      line-height: 1.05;
+      color: var(--dark-brown);
+      max-width: 800px;
+      margin: 0 auto 1rem;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--terracotta);
+    }
+
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      background: var(--warm-brown);
+      color: #fff;
+      padding: 0.85rem 2rem;
+      border: none;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover { background: var(--terracotta); transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--warm-brown);
+      padding: 0.85rem 2rem;
+      border: 1.5px solid var(--warm-brown);
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover { background: var(--warm-brown); color: #fff; transform: translateY(-1px); }
+
+    /* ── DECORATIVE DIVIDER ── */
+    .divider {
+      text-align: center;
+      color: var(--gold);
+      font-size: 1.4rem;
+      letter-spacing: 0.4em;
+      margin: 0.5rem 0;
+      opacity: 0.7;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 5rem 2rem; }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      text-align: center;
+      color: var(--dark-brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      color: var(--muted);
+      text-align: center;
+      max-width: 520px;
+      margin: 0 auto 3rem;
+    }
+
+    /* ── MENU ── */
+    #menu { background: var(--cream); }
+
+    .menu-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.5rem 1.3rem;
+      border-radius: 100px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover, .tab-btn.active {
+      background: var(--warm-brown);
+      color: #fff;
+      border-color: var(--warm-brown);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .menu-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.6rem;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(107,63,42,0.1);
+    }
+
+    .menu-card .emoji {
+      font-size: 2rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .menu-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--dark-brown);
+      margin-bottom: 0.3rem;
+    }
+
+    .menu-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .menu-card .price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      color: var(--terracotta);
+      font-weight: 400;
+    }
+
+    .badge {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border-radius: 100px;
+    }
+
+    .badge-book { background: #fde8d8; color: var(--terracotta); }
+    .badge-tomorrow { background: #e8f0d8; color: #5a7a2a; }
+    .badge-combo { background: #fdf0d4; color: var(--gold); }
+
+    /* ── COMBOS ── */
+    #combos { background: var(--parchment); }
+
+    .combos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .combo-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .combo-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: var(--gold);
+    }
+
+    .combo-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--dark-brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .combo-items {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .combo-pricing {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .combo-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: var(--terracotta);
+    }
+
+    .combo-was {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .combo-save {
+      font-size: 0.75rem;
+      background: #fde8d8;
+      color: var(--terracotta);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+    }
+
+    /* ── CAKE BOOKING ── */
+    #booking { background: var(--cream); }
+
+    .booking-wrapper {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+    }
+
+    .booking-info {
+      background: #fdf0d4;
+      border-left: 3px solid var(--gold);
+      padding: 1rem 1.2rem;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 2rem;
+      font-size: 0.85rem;
+      color: var(--warm-brown);
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 1.3rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.45rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--warm-brown);
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .size-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .size-option {
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .size-option:hover { border-color: var(--warm-brown); }
+    .size-option.selected { border-color: var(--terracotta); background: #fde8d8; }
+
+    .size-option .size-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--dark-brown);
+      display: block;
+    }
+
+    .size-option .size-price {
+      font-size: 0.85rem;
+      color: var(--terracotta);
+    }
+
+    .size-option .size-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    .slots-display {
+      background: var(--parchment);
+      border-radius: 8px;
+      padding: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    .slots-display p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .slot-pills {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .slot-pill {
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      transition: all 0.2s;
+    }
+
+    .slot-pill:hover:not(.full) { border-color: var(--warm-brown); color: var(--warm-brown); }
+    .slot-pill.selected { background: var(--warm-brown); color: #fff; border-color: var(--warm-brown); }
+    .slot-pill.full { background: #f0ebe4; color: #bbb; cursor: not-allowed; text-decoration: line-through; }
+
+    .availability-counter {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+
+    .availability-counter span { color: var(--terracotta); font-weight: 500; }
+
+    .submit-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .total-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: var(--dark-brown);
+    }
+
+    .total-display span { color: var(--terracotta); }
+
+    /* ── SUCCESS MESSAGE ── */
+    .success-msg {
+      display: none;
+      background: #edf5e4;
+      border: 1px solid #b5d48a;
+      border-radius: 8px;
+      padding: 1.2rem 1.5rem;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #4a7a1e;
+      text-align: center;
+    }
+
+    /* ── ORDER SECTION ── */
+    #order { background: var(--parchment); }
+
+    .order-wrapper {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+    }
+
+    .order-items { margin-bottom: 1.5rem; }
+
+    .order-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .order-item:last-child { border-bottom: none; }
+
+    .order-item-info { flex: 1; }
+
+    .order-item-info strong {
+      display: block;
+      font-size: 0.92rem;
+      color: var(--dark-brown);
+      font-family: 'Playfair Display', serif;
+    }
+
+    .order-item-info small { font-size: 0.78rem; color: var(--muted); }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .qty-btn {
+      width: 28px; height: 28px;
+      border: 1px solid var(--border);
+      background: var(--cream);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--warm-brown);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .qty-btn:hover { background: var(--warm-brown); color: #fff; }
+
+    .qty-num {
+      width: 28px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--dark-brown);
+    }
+
+    .item-subtotal {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--terracotta);
+      width: 60px;
+      text-align: right;
+    }
+
+    .order-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 0 0;
+      border-top: 2px solid var(--border);
+    }
+
+    .order-total-label {
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .order-total-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--dark-brown);
+    }
+
+    .dispatch-note {
+      background: #e8f0d8;
+      border-left: 3px solid #7aaa3a;
+      padding: 0.8rem 1.1rem;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.82rem;
+      color: #4a6e1e;
+      margin: 1.2rem 0;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--dark-brown);
+      color: var(--parchment);
+      text-align: center;
+    }
+
+    #about .section-label { color: var(--gold); }
+    #about .section-title { color: var(--cream); }
+    #about .section-sub { color: #c5a98a; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .about-item {
+      text-align: center;
+    }
+
+    .about-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .about-item h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--cream);
+      margin-bottom: 0.3rem;
+    }
+
+    .about-item p {
+      font-size: 0.82rem;
+      color: #9a7e68;
+      line-height: 1.5;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #2a1208;
+      color: #7a5a46;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.2rem; }
+      .nav-links { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .booking-wrapper, .order-wrapper { padding: 1.5rem; }
+      .submit-row { flex-direction: column; align-items: stretch; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Crumb & Co.</span>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#combos">Combos</a></li>
+    <li><a href="#booking">Book a Cake</a></li>
+    <li><a href="#order">Order Now</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div>
+    <span class="hero-badge">✦ Handcrafted in Vancouver, BC</span>
+    <h1>Baked with <em>love,</em><br>delivered with care.</h1>
+    <p class="hero-sub">Small-batch cakes, brownies, brookies & more — made fresh to order in our home kitchen.</p>
+    <div class="hero-btns">
+      <a href="#booking" class="btn-primary">Book a Custom Cake</a>
+      <a href="#menu" class="btn-outline">Browse Menu</a>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <p class="section-label">What We Bake</p>
+  <h2 class="section-title">Our Menu</h2>
+  <p class="section-sub">Everything is made to order with quality ingredients and a whole lot of heart.</p>
+
+  <div class="menu-tabs">
+    <button class="tab-btn active" onclick="filterMenu('all', this)">All</button>
+    <button class="tab-btn" onclick="filterMenu('cakes', this)">Cakes</button>
+    <button class="tab-btn" onclick="filterMenu('brownies', this)">Brownies & Brookies</button>
+    <button class="tab-btn" onclick="filterMenu('cupcakes', this)">Cupcakes</button>
+  </div>
+
+  <div class="menu-grid" id="menuGrid">
+
+    <!-- CAKES -->
+    <div class="menu-card" data-cat="cakes">
+      <span class="badge badge-book">Book Ahead</span>
+      <span class="emoji">🎂</span>
+      <h3>Classic Vanilla Cake</h3>
+      <p>Fluffy vanilla sponge with silky buttercream. A timeless crowd-pleaser, beautifully finished.</p>
+      <span class="price">6″ — $42 &nbsp;|&nbsp; 9″ — $62</span>
+    </div>
+
+    <div class="menu-card" data-cat="cakes">
+      <span class="badge badge-book">Book Ahead</span>
+      <span class="emoji">🍫</span>
+      <h3>Dark Chocolate Fudge Cake</h3>
+      <p>Rich, decadent layers of dark chocolate sponge with velvety ganache frosting.</p>
+      <span class="price">6″ — $45 &nbsp;|&nbsp; 9″ — $65</span>
+    </div>
+
+    <div class="menu-card" data-cat="cakes">
+      <span class="badge badge-book">Book Ahead</span>
+      <span class="emoji">🌾</span>
+      <h3>Oat Flour Vanilla Cake</h3>
+      <p>Wholesome oat flour base — lightly nutty, moist and naturally sweet. A guilt-free indulgence.</p>
+      <span class="price">6″ — $48 &nbsp;|&nbsp; 9″ — $68</span>
+    </div>
+
+    <div class="menu-card" data-cat="cakes">
+      <span class="badge badge-book">Book Ahead</span>
+      <span class="emoji">🍋</span>
+      <h3>Lemon Blueberry Cake</h3>
+      <p>Bright lemon sponge studded with fresh blueberries and lemon cream cheese frosting.</p>
+      <span class="price">6″ — $47 &nbsp;|&nbsp; 9″ — $67</span>
+    </div>
+
+    <!-- CUPCAKES -->
+    <div class="menu-card" data-cat="cupcakes">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🧁</span>
+      <h3>Berry Cupcakes</h3>
+      <p>Soft vanilla base loaded with mixed berries and topped with whipped berry buttercream. Box of 6.</p>
+      <span class="price">$28 / box of 6</span>
+    </div>
+
+    <div class="menu-card" data-cat="cupcakes">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🌾</span>
+      <h3>Oat Flour Cupcakes</h3>
+      <p>Tender oat flour cupcakes with honey cream cheese frosting. Nourishing and delicious. Box of 6.</p>
+      <span class="price">$30 / box of 6</span>
+    </div>
+
+    <!-- BROWNIES & BROOKIES -->
+    <div class="menu-card" data-cat="brownies">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🟫</span>
+      <h3>Fudgy Brownies</h3>
+      <p>Dense, gooey dark chocolate brownies with a crackly top. Cut into 9 generous squares.</p>
+      <span class="price">$22 / 9 squares</span>
+    </div>
+
+    <div class="menu-card" data-cat="brownies">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🍪</span>
+      <h3>Brookies</h3>
+      <p>Half brownie, half chocolate chip cookie — the best of both worlds baked into one perfect bar.</p>
+      <span class="price">$26 / 9 bars</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMBOS -->
+<section id="combos">
+  <p class="section-label">Better Together</p>
+  <h2 class="section-title">Combo Deals</h2>
+  <p class="section-sub">Mix, match & save — perfect for birthdays, events or treating yourself.</p>
+
+  <div class="combos-grid">
+
+    <div class="combo-card">
+      <span class="badge badge-combo" style="position:static;display:inline-block;margin-bottom:1rem;">🎉 Party Pack</span>
+      <h3>The Party Spread</h3>
+      <p class="combo-items">
+        ✦ 1 × 9″ Cake (any flavour)<br>
+        ✦ 1 × Box of Berry Cupcakes (6)<br>
+        ✦ 1 × Brownie Box (9 squares)
+      </p>
+      <div class="combo-pricing">
+        <span class="combo-price">$99</span>
+        <span class="combo-was">$115</span>
+        <span class="combo-save">Save $16</span>
+      </div>
+    </div>
+
+    <div class="combo-card">
+      <span class="badge badge-combo" style="position:static;display:inline-block;margin-bottom:1rem;">💕 Date Night</span>
+      <h3>Sweet for Two</h3>
+      <p class="combo-items">
+        ✦ 1 × 6″ Cake (any flavour)<br>
+        ✦ 1 × Brookie Box (9 bars)
+      </p>
+      <div class="combo-pricing">
+        <span class="combo-price">$62</span>
+        <span class="combo-was">$71</span>
+        <span class="combo-save">Save $9</span>
+      </div>
+    </div>
+
+    <div class="combo-card">
+      <span class="badge badge-combo" style="position:static;display:inline-block;margin-bottom:1rem;">🌾 Wholesome Bundle</span>
+      <h3>The Oat Lover's Box</h3>
+      <p class="combo-items">
+        ✦ 1 × Oat Flour Cupcakes (6)<br>
+        ✦ 1 × Oat Flour 6″ Cake<br>
+        ✦ 1 × Brownie Box (9 squares)
+      </p>
+      <div class="combo-pricing">
+        <span class="combo-price">$88</span>
+        <span class="combo-was">$100</span>
+        <span class="combo-save">Save $12</span>
+      </div>
+    </div>
+
+    <div class="combo-card">
+      <span class="badge badge-combo" style="position:static;display:inline-block;margin-bottom:1rem;">🧁 Cupcake Fiesta</span>
+      <h3>Double Cupcake Box</h3>
+      <p class="combo-items">
+        ✦ 1 × Box Berry Cupcakes (6)<br>
+        ✦ 1 × Box Oat Flour Cupcakes (6)
+      </p>
+      <div class="combo-pricing">
+        <span class="combo-price">$50</span>
+        <span class="combo-was">$58</span>
+        <span class="combo-save">Save $8</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CAKE BOOKING -->
+<section id="booking">
+  <p class="section-label">Custom Cakes</p>
+  <h2 class="section-title">Book Your Cake</h2>
+  <p class="section-sub">We take up to 3 cake orders per day. Reserve your slot early — we sell out fast!</p>
+
+  <div class="booking-wrapper">
+    <div class="booking-info">
+      ℹ️ Cake bookings require at least <strong>48 hours notice</strong>. Please pick a date at least 2 days from today. 
+      We offer pickup or local Vancouver delivery (delivery fee calculated at checkout).
+    </div>
+
+    <!-- SIZE SELECTION -->
+    <div class="form-group">
+      <label>Cake Size</label>
+      <div class="size-options">
+        <div class="size-option selected" id="size6" onclick="selectSize(6)">
+          <span class="size-name">6 Inch</span>
+          <div class="size-price">From $42</div>
+          <div class="size-desc">Serves 6–8 people</div>
+        </div>
+        <div class="size-option" id="size9" onclick="selectSize(9)">
+          <span class="size-name">9 Inch</span>
+          <div class="size-price">From $62</div>
+          <div class="size-desc">Serves 12–16 people</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLAVOUR -->
+    <div class="form-group">
+      <label>Cake Flavour</label>
+      <select id="flavourSelect" onchange="updateTotal()">
+        <option value="42,62">Classic Vanilla — 6″ $42 / 9″ $62</option>
+        <option value="45,65">Dark Chocolate Fudge — 6″ $45 / 9″ $65</option>
+        <option value="48,68">Oat Flour Vanilla — 6″ $48 / 9″ $68</option>
+        <option value="47,67">Lemon Blueberry — 6″ $47 / 9″ $67</option>
+      </select>
+    </div>
+
+    <!-- DATE + SLOT -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Pickup / Delivery Date</label>
+        <input type="date" id="bookingDate" onchange="updateSlots()" />
+      </div>
+      <div class="form-group">
+        <label>Preferred Time Slot</label>
+        <div class="slots-display">
+          <p>Select a date to see available slots.</p>
+          <div class="slot-pills" id="slotPills"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="availability-counter" id="availCounter"></div>
+
+    <!-- PERSONAL DETAILS -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="bookName" placeholder="Jane Smith" />
+      </div>
+      <div class="form-group">
+        <label>Phone / WhatsApp</label>
+        <input type="tel" id="bookPhone" placeholder="+1 604 000 0000" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="bookEmail" placeholder="jane@email.com" />
+    </div>
+
+    <div class="form-group">
+      <label>Special Message on Cake <span style="color:var(--muted);font-size:0.75rem;">(optional)</span></label>
+      <input type="text" id="cakeMessage" placeholder="e.g. Happy Birthday Sarah! 🎉" />
+    </div>
+
+    <div class="form-group">
+      <label>Allergies / Special Requests</label>
+      <textarea id="bookNotes" rows="2" placeholder="e.g. nut-free, gluten-free icing, etc."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Pickup or Delivery?</label>
+      <select id="deliveryType">
+        <option value="pickup">Pickup (Free) — Vancouver</option>
+        <option value="delivery">Local Delivery (+$8)</option>
+      </select>
+    </div>
+
+    <div class="submit-row">
+      <div class="total-display">Total: <span id="bookTotal">$42.00</span></div>
+      <button class="btn-primary" onclick="submitBooking()">Confirm Booking →</button>
+    </div>
+
+    <div class="success-msg" id="bookingSuccess">
+      🎂 Booking received! We'll confirm via email within a few hours. Can't wait to bake for you!
+    </div>
+  </div>
+</section>
+
+<!-- QUICK ORDER -->
+<section id="order">
+  <p class="section-label">Order Today</p>
+  <h2 class="section-title">Quick Order</h2>
+  <p class="section-sub">Order brownies, brookies and cupcakes today — dispatched tomorrow.</p>
+
+  <div class="order-wrapper">
+    <div class="dispatch-note">
+      📦 Orders placed before <strong>3 PM</strong> are dispatched the following day. You'll receive a confirmation email with your tracking info.
+    </div>
+
+    <div class="order-items" id="orderItems"></div>
+
+    <div class="order-total-row">
+      <span class="order-total-label">Order Total</span>
+      <span class="order-total-price" id="orderTotal">$0.00</span>
+    </div>
+
+    <div style="margin-top:1.5rem">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="orderName" placeholder="Jane Smith" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="orderEmail" placeholder="jane@email.com" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Delivery Address (Vancouver)</label>
+        <input type="text" id="orderAddress" placeholder="123 Main St, Vancouver, BC" />
+      </div>
+      <div class="form-group">
+        <label>Allergies / Notes</label>
+        <textarea id="orderNotes" rows="2" placeholder="Any dietary requirements?"></textarea>
+      </div>
+      <div class="submit-row" style="margin-top:1rem">
+        <div></div>
+        <button class="btn-primary" onclick="submitOrder()">Place Order →</button>
+      </div>
+      <div class="success-msg" id="orderSuccess">
+        ✅ Order received! You'll get a confirmation email soon. Your goodies are on their way tomorrow! 🍪
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">Our Story</p>
+  <h2 class="section-title">Made with intention.</h2>
+  <p class="section-sub" style="margin-bottom:3rem;">Crumb & Co. is a home-based Vancouver bakery. Every item is handcrafted in small batches, made fresh for your order.</p>
+
+  <div class="about-grid">
+    <div class="about-item">
+      <span class="about-icon">🌿</span>
+      <h4>Quality Ingredients</h4>
+      <p>We source local, seasonal produce and use real butter, real chocolate, and real love.</p>
+    </div>
+    <div class="about-item">
+      <span class="about-icon">🤝</span>
+      <h4>Small Batch</h4>
+      <p>We limit orders to keep everything fresh and give every cake the attention it deserves.</p>
+    </div>
+    <div class="about-item">
+      <span class="about-icon">📦</span>
+      <h4>Vancouver Made</h4>
+      <p>Proudly baked in Vancouver, BC. Local pickup and local delivery available.</p>
+    </div>
+    <div class="about-item">
+      <span class="about-icon">💬</span>
+      <h4>Custom Orders</h4>
+      <p>Want something special? We love custom flavour requests and dietary accommodations.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Crumb & Co. · Vancouver, BC · <a href="mailto:hello@crumbandco.ca">hello@crumbandco.ca</a> · Made with 🤍</p>
+</footer>
+
+<script>
+  /* ── MENU FILTER ── */
+  function filterMenu(cat, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.menu-card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+    });
+  }
+
+  /* ── BOOKING LOGIC ── */
+  let selectedSize = 6;
+  let selectedSlot = null;
+
+  // Simulated slot bookings (3 max per day)
+  const bookings = {};
+
+  const slots = ['11:00 AM', '2:00 PM', '5:00 PM'];
+
+  function selectSize(size) {
+    selectedSize = size;
+    document.getElementById('size6').classList.toggle('selected', size === 6);
+    document.getElementById('size9').classList.toggle('selected', size === 9);
+    updateTotal();
+  }
+
+  function updateTotal() {
+    const flavour = document.getElementById('flavourSelect').value.split(',');
+    const price = selectedSize === 6 ? parseFloat(flavour[0]) : parseFloat(flavour[1]);
+    const delivery = document.getElementById('deliveryType') && document.getElementById('deliveryType').value === 'delivery' ? 8 : 0;
+    document.getElementById('bookTotal').textContent = '$' + (price + delivery).toFixed(2);
+  }
+
+  function updateSlots() {
+    const dateVal = document.getElementById('bookingDate').value;
+    if (!dateVal) return;
+
+    if (!bookings[dateVal]) bookings[dateVal] = [];
+    const booked = bookings[dateVal];
+    const remaining = 3 - booked.length;
+
+    const container = document.querySelector('#slotPills').parentElement;
+    container.querySelector('p').textContent = remaining > 0
+      ? `${remaining} slot${remaining > 1 ? 's' : ''} available`
+      : 'Fully booked — please choose another date.';
+
+    const pills = document.getElementById('slotPills');
+    pills.innerHTML = '';
+    slots.forEach(slot => {
+      const taken = booked.filter(b => b === slot).length;
+      const pill = document.createElement('div');
+      pill.className = 'slot-pill' + (taken ? ' full' : '') + (selectedSlot === slot ? ' selected' : '');
+      pill.textContent = slot + (taken ? ' ✕' : '');
+      if (!taken) pill.onclick = () => {
+        selectedSlot = slot;
+        document.querySelectorAll('.slot-pill').forEach(p => p.classList.remove('selected'));
+        pill.classList.add('selected');
+      };
+      pills.appendChild(pill);
+    });
+
+    document.getElementById('availCounter').innerHTML = remaining > 0
+      ? `<span>${remaining}</span> of 3 daily slots remaining`
+      : '';
+  }
+
+  function submitBooking() {
+    const name = document.getElementById('bookName').value.trim();
+    const email = document.getElementById('bookEmail').value.trim();
+    const date = document.getElementById('bookingDate').value;
+
+    if (!name || !email || !date || !selectedSlot) {
+      alert('Please fill in your name, email, pick a date and select a time slot.');
+      return;
+    }
+
+    // Check 48h notice
+    const pickupDate = new Date(date);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const diffDays = (pickupDate - today) / (1000*60*60*24);
+    if (diffDays < 2) {
+      alert('Please choose a date at least 48 hours from today.');
+      return;
+    }
+
+    if (!bookings[date]) bookings[date] = [];
+    if (bookings[date].length >= 3) {
+      alert('This date is fully booked! Please choose another date.');
+      return;
+    }
+
+    bookings[date].push(selectedSlot);
+    selectedSlot = null;
+    document.getElementById('bookingSuccess').style.display = 'block';
+    updateSlots();
+  }
+
+  /* ── ORDER ITEMS ── */
+  const orderProducts = [
+    { name: 'Berry Cupcakes', desc: 'Box of 6', price: 28, qty: 0 },
+    { name: 'Oat Flour Cupcakes', desc: 'Box of 6', price: 30, qty: 0 },
+    { name: 'Fudgy Brownies', desc: '9 squares', price: 22, qty: 0 },
+    { name: 'Brookies', desc: '9 bars', price: 26, qty: 0 },
+    { name: 'Party Spread Combo', desc: '9″ Cake + Cupcakes + Brownies', price: 99, qty: 0 },
+    { name: 'Sweet for Two Combo', desc: '6″ Cake + Brookies', price: 62, qty: 0 },
+    { name: 'Oat Lover\'s Box', desc: 'Oat Cupcakes + 6″ Oat Cake + Brownies', price: 88, qty: 0 },
+    { name: 'Double Cupcake Box', desc: 'Berry + Oat Cupcakes (6 each)', price: 50, qty: 0 },
+  ];
+
+  function renderOrder() {
+    const container = document.getElementById('orderItems');
+    container.innerHTML = '';
+    let total = 0;
+
+    orderProducts.forEach((p, i) => {
+      total += p.price * p.qty;
+      const el = document.createElement('div');
+      el.className = 'order-item';
+      el.innerHTML = `
+        <div class="order-item-info">
+          <strong>${p.name}</strong>
+          <small>${p.desc}</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(${i}, -1)">−</button>
+          <span class="qty-num">${p.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
+        </div>
+        <div class="item-subtotal">$${(p.price * p.qty).toFixed(2)}</div>
+      `;
+      container.appendChild(el);
+    });
+
+    document.getElementById('orderTotal').textContent = '$' + total.toFixed(2);
+  }
+
+  function changeQty(i, delta) {
+    orderProducts[i].qty = Math.max(0, orderProducts[i].qty + delta);
+    renderOrder();
+  }
+
+  function submitOrder() {
+    const total = orderProducts.reduce((s, p) => s + p.qty * p.price, 0);
+    if (total === 0) { alert('Please add at least one item to your order.'); return; }
+    const name = document.getElementById('orderName').value.trim();
+    const email = document.getElementById('orderEmail').value.trim();
+    const address = document.getElementById('orderAddress').value.trim();
+    if (!name || !email || !address) { alert('Please fill in your name, email and delivery address.'); return; }
+    document.getElementById('orderSuccess').style.display = 'block';
+  }
+
+  /* ── INIT ── */
+  // Set min date for booking (today + 2 days)
+  const minDate = new Date();
+  minDate.setDate(minDate.getDate() + 2);
+  document.getElementById('bookingDate').min = minDate.toISOString().split('T')[0];
+
+  document.getElementById('deliveryType').addEventListener('change', updateTotal);
+  updateTotal();
+  renderOrder();
+</script>
+</body>
+</html>
