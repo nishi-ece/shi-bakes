@@ -1111,7 +1111,7 @@
 </section>
 
 <footer>
-  <p>© 2025 Shi's Baked goods · Vancouver, BC · <a href="mailto:hshisbakedgoods@gmail.com">shisbakedgoods@gmail.com</a> · Made with 🤍</p>
+  <p>© 2025 Shi's Baked goods · Vancouver, BC · <a href="mailto:shisbakedgoods@gmail.com">shisbakedgoods@gmail.com</a> · Made with 🤍</p>
 </footer>
 
 <script>
@@ -1191,7 +1191,7 @@
       : '';
   }
 
-  function submitBooking() {
+  async function submitBooking() {
     const name = document.getElementById('bookName').value.trim();
     const email = document.getElementById('bookEmail').value.trim();
     const date = document.getElementById('bookingDate').value;
@@ -1216,6 +1216,8 @@
       alert('This date is fully booked! Please choose another date.');
       return;
     }
+    
+    await pushBookingToSheet();
 
     bookings[date].push(selectedSlot);
     selectedSlot = null;
@@ -1267,13 +1269,14 @@
     renderOrder();
   }
 
-  function submitOrder() {
+  async function submitOrder() {
     const total = orderProducts.reduce((s, p) => s + p.qty * p.price, 0);
     if (total === 0) { alert('Please add at least one item to your order.'); return; }
     const name = document.getElementById('orderName').value.trim();
     const email = document.getElementById('orderEmail').value.trim();
     const address = document.getElementById('orderAddress').value.trim();
     if (!name || !email || !address) { alert('Please fill in your name, email and delivery address.'); return; }
+    await pushOrderToSheet();
     document.getElementById('orderSuccess').style.display = 'block';
   }
 
@@ -1286,6 +1289,64 @@
   document.getElementById('deliveryType').addEventListener('change', updateTotal);
   updateTotal();
   renderOrder();
+
+  const SHEET_API = 'https://sheetdb.io/api/v1/YOUR_SHEETDB_API_URL';
+
+function generateOrderId() {
+  return 'ORD-' + Date.now().toString().slice(-6);
+}
+function formatDate(d) {
+  return d.toLocaleDateString('en-CA');
+}
+
+async function pushOrderToSheet() {
+  const today = new Date();
+  const delivery = new Date(today);
+  delivery.setDate(today.getDate() + 1);
+  const itemsList = orderProducts.filter(p => p.qty > 0).map(p => `${p.qty}x ${p.name}`).join(', ');
+  await fetch(SHEET_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: [{
+      'Order #': generateOrderId(),
+      'Order Date': formatDate(today),
+      'Customer Name': document.getElementById('orderName').value.trim(),
+      'Contact': '',
+      'Address': document.getElementById('orderAddress').value.trim(),
+      'Ordered Items': itemsList,
+      'Additional Requirements': document.getElementById('orderNotes').value.trim(),
+      'Delivery Date': formatDate(delivery),
+      'Payment Status': 'Pending',
+      'Notes': `Email: ${document.getElementById('orderEmail').value.trim()}`
+    }]})
+  }).catch(console.error);
+}
+
+async function pushBookingToSheet() {
+  const flavours = document.getElementById('flavourSelect');
+  const flavourName = flavours.options[flavours.selectedIndex].text.split('—')[0].trim();
+  const deliveryType = document.getElementById('deliveryType').value;
+  await fetch(SHEET_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: [{
+      'Order #': generateOrderId(),
+      'Order Date': formatDate(new Date()),
+      'Customer Name': document.getElementById('bookName').value.trim(),
+      'Contact': document.getElementById('bookPhone').value.trim(),
+      'Address': deliveryType === 'delivery' ? 'Delivery — confirm address' : 'Pickup',
+      'Ordered Items': `${selectedSize}" ${flavourName} Cake`,
+      'Additional Requirements': [
+        document.getElementById('cakeMessage').value.trim() ? `Message: "${document.getElementById('cakeMessage').value.trim()}"` : '',
+        document.getElementById('bookNotes').value.trim()
+      ].filter(Boolean).join(' | '),
+      'Delivery Date': document.getElementById('bookingDate').value,
+      'Payment Status': 'Pending',
+      'Notes': `Slot: ${selectedSlot} | Email: ${document.getElementById('bookEmail').value.trim()}`
+    }]})
+  }).catch(console.error);
+}
+
 </script>
 </body>
 </html>
