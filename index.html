@@ -1291,86 +1291,96 @@
   renderOrder();
 
 
-  // ── SHEETDB API ──
-  // Both quick orders and cake bookings go to the same "Orders" sheet
-  // using your single SheetDB API URL below
-  const SHEET_API = 'https://sheetdb.io/api/v1/oi26bm7geq0f9';
+  // ── SHEETDB SETUP ──
+  // "Orders" tab → quick orders from the Quick Order section
+  // "Cake Bookings" tab → cake bookings from the Book a Cake section
+  //
+  // ORDERS_API   → your existing SheetDB API (already connected to the Orders tab)
+  // BOOKINGS_API → create a NEW SheetDB API on sheetdb.io pointing to the "Cake Bookings" tab
+  //                then replace REPLACE_WITH_CAKE_BOOKINGS_API_ID below with the new ID
 
-  function generateOrderId()  { return 'ORD-' + Date.now().toString().slice(-6); }
+  const ORDERS_API   = 'https://sheetdb.io/api/v1/oi26bm7geq0f9';
+  const BOOKINGS_API = 'https://sheetdb.io/api/v1/qzjfhophrhlhy';
+
+  function generateOrderId()   { return 'ORD-' + Date.now().toString().slice(-6); }
   function generateBookingId() { return 'BK-'  + Date.now().toString().slice(-6); }
-  function formatDate(d) { return d.toLocaleDateString('en-CA'); }
+  function formatDate(d)       { return d.toLocaleDateString('en-CA'); }
 
-  // ── Quick Orders → "Orders" sheet ──
+  // ── Quick Orders → "Orders" tab ──
+  // Columns: Order #, Order Date, Customer Name, Contact, Address,
+  //          Ordered Items, Additional Requirements, Order Type,
+  //          Delivery Date, Payment Status, Order Total ($), Notes
   async function pushOrderToSheet() {
     const today    = new Date();
     const delivery = new Date(today);
     delivery.setDate(today.getDate() + 1);
-
     const itemsList = orderProducts
       .filter(p => p.qty > 0)
-      .map(p => `${p.qty}x ${p.name} (${p.desc})`)
+      .map(p => `${p.qty}x ${p.name}`)
       .join(', ');
-
     const total = orderProducts.reduce((s, p) => s + p.qty * p.price, 0);
-
     try {
-      const res = await fetch(SHEET_API, {
+      const res = await fetch(ORDERS_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data: [{
-          'Order #':                  generateOrderId(),
-          'Order Date':               formatDate(today),
-          'Customer Name':            document.getElementById('orderName').value.trim(),
-          'Contact':                  document.getElementById('orderEmail').value.trim(),
-          'Address':                  document.getElementById('orderAddress').value.trim(),
-          'Ordered Items':            itemsList,
-          'Additional Requirements':  document.getElementById('orderNotes').value.trim(),
-          'Order Type':               'Quick Order',
-          'Delivery Date':            formatDate(delivery),
-          'Payment Status':           'Pending',
-          'Order Total ($)':          total.toFixed(2),
-          'Notes':                    'Via website'
+          'Order #':                 generateOrderId(),
+          'Order Date':              formatDate(today),
+          'Customer Name':           document.getElementById('orderName').value.trim(),
+          'Contact':                 document.getElementById('orderEmail').value.trim(),
+          'Address':                 document.getElementById('orderAddress').value.trim(),
+          'Ordered Items':           itemsList,
+          'Additional Requirements': document.getElementById('orderNotes').value.trim(),
+          'Order Type':              'Quick Order',
+          'Delivery Date':           formatDate(delivery),
+          'Payment Status':          'Pending',
+          'Order Total ($)':         total.toFixed(2),
+          'Notes':                   'Via website'
         }]})
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
-      console.log('✓ Order saved to sheet');
+      console.log('✓ Order saved to Orders tab');
     } catch (err) {
       console.error('Sheet error (order):', err);
     }
   }
 
-  // ── Cake Bookings → "Orders" sheet ──
+  // ── Cake Bookings → "Cake Bookings" tab ──
+  // Columns: Booking #, Booked On, Customer Name, Phone / WhatsApp, Email,
+  //          Cake Size, Cake Flavour, Pickup / Delivery, Cake Message,
+  //          Allergies / Notes, Pickup Date, Time Slot, Payment Status, Order Total ($)
   async function pushBookingToSheet() {
-    const flavourEl    = document.getElementById('flavourSelect');
-    const flavourName  = flavourEl.options[flavourEl.selectedIndex].text.split('—')[0].trim();
-    const isDelivery   = document.getElementById('deliveryType').value === 'delivery';
-    const flavourPrices = flavourEl.value.split(',');
-    const basePrice    = selectedSize === 6 ? parseFloat(flavourPrices[0]) : parseFloat(flavourPrices[1]);
-    const total        = (basePrice + (isDelivery ? 8 : 0)).toFixed(2);
-    const cakeMsg      = document.getElementById('cakeMessage').value.trim();
-    const notes        = document.getElementById('bookNotes').value.trim();
-
+    const flavourEl   = document.getElementById('flavourSelect');
+    const flavourName = flavourEl.options[flavourEl.selectedIndex].text.split('—')[0].trim();
+    const isDelivery  = document.getElementById('deliveryType').value === 'delivery';
+    const prices      = flavourEl.value.split(',');
+    const basePrice   = selectedSize === 6 ? parseFloat(prices[0]) : parseFloat(prices[1]);
+    const total       = (basePrice + (isDelivery ? 8 : 0)).toFixed(2);
+    const cakeMsg     = document.getElementById('cakeMessage').value.trim();
+    const notes       = document.getElementById('bookNotes').value.trim();
     try {
-      const res = await fetch(SHEET_API, {
+      const res = await fetch(BOOKINGS_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data: [{
-          'Order #':                  generateBookingId(),
-          'Order Date':               formatDate(new Date()),
-          'Customer Name':            document.getElementById('bookName').value.trim(),
-          'Contact':                  document.getElementById('bookPhone').value.trim(),
-          'Address':                  isDelivery ? 'Delivery — confirm address' : 'Pickup',
-          'Ordered Items':            `${selectedSize}" ${flavourName} Cake`,
-          'Additional Requirements':  [cakeMsg ? `Message: "${cakeMsg}"` : '', notes].filter(Boolean).join(' | '),
-          'Order Type':               'Cake Booking',
-          'Delivery Date':            document.getElementById('bookingDate').value,
-          'Payment Status':           'Pending',
-          'Order Total ($)':          total,
-          'Notes':                    `Slot: ${selectedSlot} | Email: ${document.getElementById('bookEmail').value.trim()}`
+          'Booking #':         generateBookingId(),
+          'Booked On':         formatDate(new Date()),
+          'Customer Name':     document.getElementById('bookName').value.trim(),
+          'Phone / WhatsApp':  document.getElementById('bookPhone').value.trim(),
+          'Email':             document.getElementById('bookEmail').value.trim(),
+          'Cake Size':         selectedSize + '"',
+          'Cake Flavour':      flavourName,
+          'Pickup / Delivery': isDelivery ? 'Delivery' : 'Pickup',
+          'Cake Message':      cakeMsg,
+          'Allergies / Notes': notes,
+          'Pickup Date':       document.getElementById('bookingDate').value,
+          'Time Slot':         selectedSlot,
+          'Payment Status':    'Pending',
+          'Order Total ($)':   total
         }]})
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
-      console.log('✓ Booking saved to sheet');
+      console.log('✓ Booking saved to Cake Bookings tab');
     } catch (err) {
       console.error('Sheet error (booking):', err);
     }
