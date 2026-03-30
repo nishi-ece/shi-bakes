@@ -1217,7 +1217,7 @@
       return;
     }
     
-    const response = await fetch('http://localhost:3000/order', {
+    const SHEET_API = ('https://sheetdb.io/api/v1/oi26bm7geq0f9', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1292,7 +1292,7 @@
     const email = document.getElementById('orderEmail').value.trim();
     const address = document.getElementById('orderAddress').value.trim();
     if (!name || !email || !address) { alert('Please fill in your name, email and delivery address.'); return; }
-    const response = await fetch('http://localhost:3000/order', {
+    const response = await fetch(SHEET_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
