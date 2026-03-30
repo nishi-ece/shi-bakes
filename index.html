@@ -1217,7 +1217,23 @@
       return;
     }
     
-    await pushBookingToSheet();
+    const response = await fetch('http://localhost:3000/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: document.getElementById('orderName').value.trim(),
+        email: document.getElementById('orderEmail').value.trim(),
+        address: document.getElementById('orderAddress').value.trim(),
+        items: orderProducts.filter(p => p.qty > 0)
+          .map(p => `${p.qty}x ${p.name}`)
+          .join(', ')
+      })
+    });
+
+    const data = await response.json();
+
+    // 👉 Open WhatsApp automatically
+    window.open(data.whatsappURL, '_blank');
 
     bookings[date].push(selectedSlot);
     selectedSlot = null;
@@ -1276,7 +1292,23 @@
     const email = document.getElementById('orderEmail').value.trim();
     const address = document.getElementById('orderAddress').value.trim();
     if (!name || !email || !address) { alert('Please fill in your name, email and delivery address.'); return; }
-    await pushOrderToSheet();
+    const response = await fetch('http://localhost:3000/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: document.getElementById('orderName').value.trim(),
+        email: document.getElementById('orderEmail').value.trim(),
+        address: document.getElementById('orderAddress').value.trim(),
+        items: orderProducts.filter(p => p.qty > 0)
+          .map(p => `${p.qty}x ${p.name}`)
+          .join(', ')
+      })
+    });
+
+    const data = await response.json();
+
+    // 👉 Open WhatsApp automatically
+    window.open(data.whatsappURL, '_blank');
     document.getElementById('orderSuccess').style.display = 'block';
   }
 
@@ -1307,18 +1339,23 @@ async function pushOrderToSheet() {
   await fetch(SHEET_API, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data: [{
-      'Order #': generateOrderId(),
-      'Order Date': formatDate(today),
-      'Customer Name': document.getElementById('orderName').value.trim(),
-      'Contact': '',
-      'Address': document.getElementById('orderAddress').value.trim(),
-      'Ordered Items': itemsList,
-      'Additional Requirements': document.getElementById('orderNotes').value.trim(),
-      'Delivery Date': formatDate(delivery),
-      'Payment Status': 'Pending',
-      'Notes': `Email: ${document.getElementById('orderEmail').value.trim()}`
-    }]})
+    body: JSON.stringify({
+      "Order #": generateOrderId(),
+      "Order Date": new Date().toLocaleString(),
+      "Customer Name": document.getElementById('orderName').value.trim(),
+      "Contact": document.getElementById('orderEmail').value.trim(),
+      "Address": document.getElementById('orderAddress').value.trim(),
+      "Ordered Items": orderProducts
+        .filter(p => p.qty > 0)
+        .map(p => `${p.qty}x ${p.name}`)
+        .join(', '),
+      "Additional Requirements": "",
+      "Order Type": "Website Order",
+      "Delivery Date": "",
+      "Payment Status": "Pending",
+      "Order Total ($)": calculateOrderTotal(),
+      "Notes": ""
+    })
   }).catch(console.error);
 }
 
