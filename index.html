@@ -1366,21 +1366,25 @@ async function pushBookingToSheet() {
   await fetch(SHEET_API, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data: [{
-      'Order #': generateOrderId(),
-      'Order Date': formatDate(new Date()),
-      'Customer Name': document.getElementById('bookName').value.trim(),
-      'Contact': document.getElementById('bookPhone').value.trim(),
-      'Address': deliveryType === 'delivery' ? 'Delivery — confirm address' : 'Pickup',
-      'Ordered Items': `${selectedSize}" ${flavourName} Cake`,
-      'Additional Requirements': [
-        document.getElementById('cakeMessage').value.trim() ? `Message: "${document.getElementById('cakeMessage').value.trim()}"` : '',
+    body: JSON.stringify({
+      "Order #": generateOrderId(),
+      "Order Date": new Date().toLocaleString(),
+      "Customer Name": document.getElementById('bookName').value.trim(),
+      "Contact": document.getElementById('bookPhone').value.trim(),
+      "Address": deliveryType === 'delivery' ? 'Delivery — confirm address' : 'Pickup',
+      "Ordered Items": `${selectedSize}" ${flavourName} Cake`,
+      "Additional Requirements": [
+        document.getElementById('cakeMessage').value.trim()
+          ? `Message: "${document.getElementById('cakeMessage').value.trim()}"`
+          : '',
         document.getElementById('bookNotes').value.trim()
       ].filter(Boolean).join(' | '),
-      'Delivery Date': document.getElementById('bookingDate').value,
-      'Payment Status': 'Pending',
-      'Notes': `Slot: ${selectedSlot} | Email: ${document.getElementById('bookEmail').value.trim()}`
-    }]})
+      "Order Type": "Cake Booking",
+      "Delivery Date": document.getElementById('bookingDate').value,
+      "Payment Status": "Pending",
+      "Order Total ($)": "",
+      "Notes": `Slot: ${selectedSlot} | Email: ${document.getElementById('bookEmail').value.trim()}`
+    })
   }).catch(console.error);
 }
 
