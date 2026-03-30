@@ -1111,10 +1111,10 @@
 </section>
 
 <footer>
-  <p>© 2025 Shi's Baked goods · Vancouver, BC · <a href="/cdn-cgi/l/email-protection#27544f4e5445464c4243404848435467404a464e4b0944484a"><span class="__cf_email__" data-cfemail="56253e3f2534373d3332313939322516313b373f3a7835393b">[email&#160;protected]</span></a> · Made with 🤍</p>
+  <p>© 2025 Shi's Baked goods · Vancouver, BC · <a href="mailto:shisbakedgoods@gmail.com">shisbakedgoods@gmail.com</a> · Made with 🤍</p>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   /* ── MENU FILTER ── */
   function filterMenu(cat, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1217,7 +1217,23 @@
       return;
     }
     
-    await pushBookingToSheet();
+    const SHEET_API = ('https://sheetdb.io/api/v1/oi26bm7geq0f9', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: document.getElementById('orderName').value.trim(),
+        email: document.getElementById('orderEmail').value.trim(),
+        address: document.getElementById('orderAddress').value.trim(),
+        items: orderProducts.filter(p => p.qty > 0)
+          .map(p => `${p.qty}x ${p.name}`)
+          .join(', ')
+      })
+    });
+
+    const data = await response.json();
+
+    // 👉 Open WhatsApp automatically
+    window.open(data.whatsappURL, '_blank');
 
     bookings[date].push(selectedSlot);
     selectedSlot = null;
@@ -1276,7 +1292,23 @@
     const email = document.getElementById('orderEmail').value.trim();
     const address = document.getElementById('orderAddress').value.trim();
     if (!name || !email || !address) { alert('Please fill in your name, email and delivery address.'); return; }
-    await pushOrderToSheet();
+    const response = await fetch(SHEET_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: document.getElementById('orderName').value.trim(),
+        email: document.getElementById('orderEmail').value.trim(),
+        address: document.getElementById('orderAddress').value.trim(),
+        items: orderProducts.filter(p => p.qty > 0)
+          .map(p => `${p.qty}x ${p.name}`)
+          .join(', ')
+      })
+    });
+
+    const data = await response.json();
+
+    // 👉 Open WhatsApp automatically
+    window.open(data.whatsappURL, '_blank');
     document.getElementById('orderSuccess').style.display = 'block';
   }
 
@@ -1290,91 +1322,71 @@
   updateTotal();
   renderOrder();
 
-
-  // ── SHEETDB API ──
-  // Both quick orders and cake bookings go to the same "Orders" sheet
-  // using your single SheetDB API URL below
   const SHEET_API = 'https://sheetdb.io/api/v1/oi26bm7geq0f9';
 
-  function generateOrderId()  { return 'ORD-' + Date.now().toString().slice(-6); }
-  function generateBookingId() { return 'BK-'  + Date.now().toString().slice(-6); }
-  function formatDate(d) { return d.toLocaleDateString('en-CA'); }
+function generateOrderId() {
+  return 'ORD-' + Date.now().toString().slice(-6);
+}
+function formatDate(d) {
+  return d.toLocaleDateString('en-CA');
+}
 
-  // ── Quick Orders → "Orders" sheet ──
-  async function pushOrderToSheet() {
-    const today    = new Date();
-    const delivery = new Date(today);
-    delivery.setDate(today.getDate() + 1);
+async function pushOrderToSheet() {
+  const today = new Date();
+  const delivery = new Date(today);
+  delivery.setDate(today.getDate() + 1);
+  const itemsList = orderProducts.filter(p => p.qty > 0).map(p => `${p.qty}x ${p.name}`).join(', ');
+  await fetch(SHEET_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      "Order #": generateOrderId(),
+      "Order Date": new Date().toLocaleString(),
+      "Customer Name": document.getElementById('orderName').value.trim(),
+      "Contact": document.getElementById('orderEmail').value.trim(),
+      "Address": document.getElementById('orderAddress').value.trim(),
+      "Ordered Items": orderProducts
+        .filter(p => p.qty > 0)
+        .map(p => `${p.qty}x ${p.name}`)
+        .join(', '),
+      "Additional Requirements": "",
+      "Order Type": "Website Order",
+      "Delivery Date": "",
+      "Payment Status": "Pending",
+      "Order Total ($)": calculateOrderTotal(),
+      "Notes": ""
+    })
+  }).catch(console.error);
+}
 
-    const itemsList = orderProducts
-      .filter(p => p.qty > 0)
-      .map(p => `${p.qty}x ${p.name} (${p.desc})`)
-      .join(', ');
-
-    const total = orderProducts.reduce((s, p) => s + p.qty * p.price, 0);
-
-    try {
-      const res = await fetch(SHEET_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: [{
-          'Order #':                  generateOrderId(),
-          'Order Date':               formatDate(today),
-          'Customer Name':            document.getElementById('orderName').value.trim(),
-          'Contact':                  document.getElementById('orderEmail').value.trim(),
-          'Address':                  document.getElementById('orderAddress').value.trim(),
-          'Ordered Items':            itemsList,
-          'Additional Requirements':  document.getElementById('orderNotes').value.trim(),
-          'Order Type':               'Quick Order',
-          'Delivery Date':            formatDate(delivery),
-          'Payment Status':           'Pending',
-          'Order Total ($)':          total.toFixed(2),
-          'Notes':                    'Via website'
-        }]})
-      });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      console.log('✓ Order saved to sheet');
-    } catch (err) {
-      console.error('Sheet error (order):', err);
-    }
-  }
-
-  // ── Cake Bookings → "Orders" sheet ──
-  async function pushBookingToSheet() {
-    const flavourEl    = document.getElementById('flavourSelect');
-    const flavourName  = flavourEl.options[flavourEl.selectedIndex].text.split('—')[0].trim();
-    const isDelivery   = document.getElementById('deliveryType').value === 'delivery';
-    const flavourPrices = flavourEl.value.split(',');
-    const basePrice    = selectedSize === 6 ? parseFloat(flavourPrices[0]) : parseFloat(flavourPrices[1]);
-    const total        = (basePrice + (isDelivery ? 8 : 0)).toFixed(2);
-    const cakeMsg      = document.getElementById('cakeMessage').value.trim();
-    const notes        = document.getElementById('bookNotes').value.trim();
-
-    try {
-      const res = await fetch(SHEET_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: [{
-          'Order #':                  generateBookingId(),
-          'Order Date':               formatDate(new Date()),
-          'Customer Name':            document.getElementById('bookName').value.trim(),
-          'Contact':                  document.getElementById('bookPhone').value.trim(),
-          'Address':                  isDelivery ? 'Delivery — confirm address' : 'Pickup',
-          'Ordered Items':            `${selectedSize}" ${flavourName} Cake`,
-          'Additional Requirements':  [cakeMsg ? `Message: "${cakeMsg}"` : '', notes].filter(Boolean).join(' | '),
-          'Order Type':               'Cake Booking',
-          'Delivery Date':            document.getElementById('bookingDate').value,
-          'Payment Status':           'Pending',
-          'Order Total ($)':          total,
-          'Notes':                    `Slot: ${selectedSlot} | Email: ${document.getElementById('bookEmail').value.trim()}`
-        }]})
-      });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      console.log('✓ Booking saved to sheet');
-    } catch (err) {
-      console.error('Sheet error (booking):', err);
-    }
-  }
+async function pushBookingToSheet() {
+  const flavours = document.getElementById('flavourSelect');
+  const flavourName = flavours.options[flavours.selectedIndex].text.split('—')[0].trim();
+  const deliveryType = document.getElementById('deliveryType').value;
+  await fetch(SHEET_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      "Order #": generateOrderId(),
+      "Order Date": new Date().toLocaleString(),
+      "Customer Name": document.getElementById('bookName').value.trim(),
+      "Contact": document.getElementById('bookPhone').value.trim(),
+      "Address": deliveryType === 'delivery' ? 'Delivery — confirm address' : 'Pickup',
+      "Ordered Items": `${selectedSize}" ${flavourName} Cake`,
+      "Additional Requirements": [
+        document.getElementById('cakeMessage').value.trim()
+          ? `Message: "${document.getElementById('cakeMessage').value.trim()}"`
+          : '',
+        document.getElementById('bookNotes').value.trim()
+      ].filter(Boolean).join(' | '),
+      "Order Type": "Cake Booking",
+      "Delivery Date": document.getElementById('bookingDate').value,
+      "Payment Status": "Pending",
+      "Order Total ($)": "",
+      "Notes": `Slot: ${selectedSlot} | Email: ${document.getElementById('bookEmail').value.trim()}`
+    })
+  }).catch(console.error);
+}
 
 </script>
 </body>
