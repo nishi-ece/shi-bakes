@@ -386,7 +386,7 @@
     }
 
     /* ── CAKE BOOKING ── */
-    /* #booking { background: var(--cream); }
+    #booking { background: var(--cream); }
 
     .booking-wrapper {
       max-width: 680px;
@@ -395,9 +395,9 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 2.5rem;
-    } */
+    }
 
-    /* .booking-info {
+    .booking-info {
       background: #fdf0d4;
       border-left: 3px solid var(--gold);
       padding: 1rem 1.2rem;
@@ -434,9 +434,9 @@
       color: var(--text);
       transition: border-color 0.2s;
       appearance: none;
-    } */
+    }
 
-    /* .form-group input:focus,
+    .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
       outline: none;
@@ -479,7 +479,7 @@
       font-size: 0.75rem;
       color: var(--muted);
       margin-top: 0.2rem;
-    } */
+    }
 
     .slots-display {
       background: var(--parchment);
@@ -731,7 +731,7 @@
   <ul class="nav-links">
     <li><a href="#menu">Menu</a></li>
     <li><a href="#combos">Combos</a></li>
-    <!-- <li><a href="#booking">Book a Cake</a></li> -->
+    <li><a href="#booking">Book a Cake</a></li>
     <li><a href="#order">Order Now</a></li>
     <li><a href="#about">About</a></li>
   </ul>
@@ -742,9 +742,9 @@
   <div>
     <span class="hero-badge">✦ Handcrafted in Vancouver, BC</span>
     <h1>Baked with <em>love,</em><br>delivered with care.</h1>
-    <p class="hero-sub">Small-batch cupcakes, brownies, brookies & more — made fresh to order in our home kitchen.</p>
+    <p class="hero-sub">Small-batch cakes, brownies, brookies & more — made fresh to order in our home kitchen.</p>
     <div class="hero-btns">
-      <!-- <a href="#booking" class="btn-primary">Book a Custom Cake</a> -->
+      <a href="#booking" class="btn-primary">Book a Custom Cake</a>
       <a href="#menu" class="btn-outline">Browse Menu</a>
     </div>
   </div>
@@ -758,7 +758,7 @@
 
   <div class="menu-tabs">
     <button class="tab-btn active" onclick="filterMenu('all', this)">All</button>
-    <!-- <button class="tab-btn" onclick="filterMenu('cakes', this)">Cakes</button> -->
+    <button class="tab-btn" onclick="filterMenu('cakes', this)">Cakes</button>
     <button class="tab-btn" onclick="filterMenu('brownies', this)">Brownies & Brookies</button>
     <button class="tab-btn" onclick="filterMenu('cupcakes', this)">Cupcakes</button>
   </div>
@@ -766,7 +766,7 @@
   <div class="menu-grid" id="menuGrid">
 
     <!-- CAKES -->
-    <!-- <div class="menu-card" data-cat="cakes">
+    <div class="menu-card" data-cat="cakes">
       <span class="badge badge-book">Book Ahead</span>
       <span class="emoji">🎂</span>
       <h3>Classic Vanilla Cake</h3>
@@ -796,7 +796,7 @@
       <h3>Lemon Blueberry Cake</h3>
       <p>Bright lemon sponge studded with fresh blueberries and lemon cream cheese frosting.</p>
       <span class="price">6″ — $47 &nbsp;|&nbsp; 9″ — $67</span>
-    </div> -->
+    </div>
 
     <!-- CUPCAKES -->
     <div class="menu-card" data-cat="cupcakes">
@@ -871,6 +871,7 @@
       <span class="badge badge-combo" style="position:static;display:inline-block;margin-bottom:1rem;">🎉 Party Pack</span>
       <h3>The Party Spread</h3>
       <p class="combo-items">
+        ✦ 1 × 9″ Cake (any flavour)<br>
         ✦ 1 × Box of Berry Cupcakes (6)<br>
         ✦ 1 × Brownie Box (9 squares)
       </p>
@@ -885,8 +886,8 @@
       <span class="badge badge-combo" style="position:static;display:inline-block;margin-bottom:1rem;">💕 Date Night</span>
       <h3>Sweet for Two</h3>
       <p class="combo-items">
-        ✦ 1 × Brookie Box (6 bars) <br>
-        ✦ 1 × Chocolate Cupcake Box (6)
+        ✦ 1 × 6″ Cake (any flavour)<br>
+        ✦ 1 × Brookie Box (9 bars)
       </p>
       <div class="combo-pricing">
         <span class="combo-price">$62</span>
@@ -900,6 +901,7 @@
       <h3>The Oat Lover's Box</h3>
       <p class="combo-items">
         ✦ 1 × Oat Flour Cupcakes (6)<br>
+        ✦ 1 × Oat Flour 6″ Cake<br>
         ✦ 1 × Brownie Box (9 squares)
       </p>
       <div class="combo-pricing">
@@ -953,7 +955,7 @@
           <div class="size-desc">Serves 12–16 people</div>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <!-- FLAVOUR -->
     <div class="form-group">
@@ -1019,7 +1021,7 @@
       </select>
     </div>
 
-    <div class="submit-row"> 
+    <div class="submit-row">
       <div class="total-display">Total: <span id="bookTotal">$42.00</span></div>
       <button class="btn-primary" onclick="submitBooking()">Confirm Booking →</button>
     </div>
@@ -1228,11 +1230,11 @@
     { name: 'Berry Cupcakes', desc: 'Box of 6', price: 28, qty: 0 },
     { name: 'Oat Flour Cupcakes', desc: 'Box of 6', price: 30, qty: 0 },
     { name: 'Fudgy Brownies', desc: '9 squares', price: 22, qty: 0 },
-    { name: 'Brookies', desc: 'Box of 9', price: 26, qty: 0 },
-    { name: 'Party Spread Combo', desc: 'Cupcakes + Brownies', price: 99, qty: 0 },
-    { name: 'Sweet for Two Combo', desc: 'Brookies + Cupcakes (6 each)', price: 62, qty: 0 },
-    { name: 'Oat Lover\'s Box', desc: 'Oat Flour Cupcakes + Oat Flour Brownies (6 each)', price: 88, qty: 0 },
-    { name: 'Double Cupcake Box', desc: 'Berry + Oat Cupcakes (12)', price: 50, qty: 0 },
+    { name: 'Brookies', desc: '9 bars', price: 26, qty: 0 },
+    { name: 'Party Spread Combo', desc: '9″ Cake + Cupcakes + Brownies', price: 99, qty: 0 },
+    { name: 'Sweet for Two Combo', desc: '6″ Cake + Brookies', price: 62, qty: 0 },
+    { name: 'Oat Lover\'s Box', desc: 'Oat Cupcakes + 6″ Oat Cake + Brownies', price: 88, qty: 0 },
+    { name: 'Double Cupcake Box', desc: 'Berry + Oat Cupcakes (6 each)', price: 50, qty: 0 },
   ];
 
   function renderOrder() {
@@ -1349,42 +1351,42 @@
   }
 
   // ── Cake Bookings → Order Type: "Cake Booking" ──
-  // async function pushBookingToSheet() {
-  //   const flavourEl   = document.getElementById('flavourSelect');
-  //   const flavourName = flavourEl.options[flavourEl.selectedIndex].text.split('—')[0].trim();
-  //   const isDelivery  = document.getElementById('deliveryType').value === 'delivery';
-  //   const prices      = flavourEl.value.split(',');
-  //   const basePrice   = selectedSize === 6 ? parseFloat(prices[0]) : parseFloat(prices[1]);
-  //   const total       = (basePrice + (isDelivery ? 8 : 0)).toFixed(2);
-  //   const cakeMsg     = document.getElementById('cakeMessage').value.trim();
-  //   const allergies   = document.getElementById('bookNotes').value.trim();
-  //   const extras      = [cakeMsg ? 'Message: ' + cakeMsg : '', allergies].filter(Boolean).join(' | ');
-  //   const id          = await getNextId('BK');
-  //   try {
-  //     const res = await fetch(SHEET_API, {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ data: [{
-    //       'Order #':                 id,
-    //       'Order Date':              formatDate(new Date()),
-    //       'Customer Name':           document.getElementById('bookName').value.trim(),
-    //       'Contact':                 document.getElementById('bookPhone').value.trim(),
-    //       'Address':                 isDelivery ? 'Delivery' : 'Pickup',
-    //       'Ordered Items':           selectedSize + '" ' + flavourName + ' Cake',
-    //       'Additional Requirements': extras,
-    //       'Order Type':              'Cake Booking',
-    //       'Delivery Date':           document.getElementById('bookingDate').value,
-    //       'Payment Status':          'Pending',
-    //       'Order Total ($)':         total,
-    //       'Notes':                   'Slot: ' + selectedSlot + ' | Email: ' + document.getElementById('bookEmail').value.trim()
-    //     }]})
-    //   });
-    //   if (!res.ok) throw new Error('HTTP ' + res.status);
-    //   console.log('✓ Cake booking saved as ' + id);
-    // } catch (err) {
-    //   console.error('Sheet error (booking):', err);
-  //   }
-  // }
+  async function pushBookingToSheet() {
+    const flavourEl   = document.getElementById('flavourSelect');
+    const flavourName = flavourEl.options[flavourEl.selectedIndex].text.split('—')[0].trim();
+    const isDelivery  = document.getElementById('deliveryType').value === 'delivery';
+    const prices      = flavourEl.value.split(',');
+    const basePrice   = selectedSize === 6 ? parseFloat(prices[0]) : parseFloat(prices[1]);
+    const total       = (basePrice + (isDelivery ? 8 : 0)).toFixed(2);
+    const cakeMsg     = document.getElementById('cakeMessage').value.trim();
+    const allergies   = document.getElementById('bookNotes').value.trim();
+    const extras      = [cakeMsg ? 'Message: ' + cakeMsg : '', allergies].filter(Boolean).join(' | ');
+    const id          = await getNextId('BK');
+    try {
+      const res = await fetch(SHEET_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: [{
+          'Order #':                 id,
+          'Order Date':              formatDate(new Date()),
+          'Customer Name':           document.getElementById('bookName').value.trim(),
+          'Contact':                 document.getElementById('bookPhone').value.trim(),
+          'Address':                 isDelivery ? 'Delivery' : 'Pickup',
+          'Ordered Items':           selectedSize + '" ' + flavourName + ' Cake',
+          'Additional Requirements': extras,
+          'Order Type':              'Cake Booking',
+          'Delivery Date':           document.getElementById('bookingDate').value,
+          'Payment Status':          'Pending',
+          'Order Total ($)':         total,
+          'Notes':                   'Slot: ' + selectedSlot + ' | Email: ' + document.getElementById('bookEmail').value.trim()
+        }]})
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      console.log('✓ Cake booking saved as ' + id);
+    } catch (err) {
+      console.error('Sheet error (booking):', err);
+    }
+  }
 
 </script>
 </body>
