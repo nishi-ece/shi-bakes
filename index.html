@@ -1292,16 +1292,26 @@
 
 
   // ── SHEETDB SETUP ──
-  // Both quick orders AND cake bookings go to the same Orders tab / same API.
-  // The "Order Type" column tells them apart: "Quick Order" vs "Cake Booking"
-  // Your sheet columns: Order #, Order Date, Customer Name, Contact, Address,
-  //                     Ordered Items, Additional Requirements, Order Type,
-  //                     Delivery Date, Payment Status, Order Total ($), Notes
+  // Single API — both quick orders and cake bookings go to the Orders tab.
+  // Told apart by the "Order Type" column: "Quick Order" vs "Cake Booking".
 
   const SHEET_API = 'https://sheetdb.io/api/v1/oi26bm7geq0f9';
 
-  function generateId(prefix) { return prefix + '-' + Date.now().toString().slice(-6); }
-  function formatDate(d)      { return d.toLocaleDateString('en-CA'); }
+  function formatDate(d) { return d.toLocaleDateString('en-CA'); }
+
+  // Fetches the current row count from the sheet and returns the next sequential ID
+  // e.g. if there are 3 rows already → returns "ORD-004"
+  async function getNextId(prefix) {
+    try {
+      const res  = await fetch(SHEET_API + '/count');
+      const data = await res.json();
+      const next = (parseInt(data.rows || 0) + 1).toString().padStart(3, '0');
+      return prefix + '-' + next;
+    } catch {
+      // fallback to timestamp if count fails
+      return prefix + '-' + Date.now().toString().slice(-6);
+    }
+  }
 
   // ── Quick Orders → Order Type: "Quick Order" ──
   async function pushOrderToSheet() {
@@ -1310,15 +1320,16 @@
     delivery.setDate(today.getDate() + 1);
     const itemsList = orderProducts
       .filter(p => p.qty > 0)
-      .map(p => `${p.qty}x ${p.name}`)
+      .map(p => p.qty + 'x ' + p.name)
       .join(', ');
     const total = orderProducts.reduce((s, p) => s + p.qty * p.price, 0);
+    const id    = await getNextId('ORD');
     try {
       const res = await fetch(SHEET_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data: [{
-          'Order #':                 generateId('ORD'),
+          'Order #':                 id,
           'Order Date':              formatDate(today),
           'Customer Name':           document.getElementById('orderName').value.trim(),
           'Contact':                 document.getElementById('orderEmail').value.trim(),
@@ -1333,18 +1344,13 @@
         }]})
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
-      console.log('✓ Quick order saved');
+      console.log('✓ Quick order saved as ' + id);
     } catch (err) {
       console.error('Sheet error (order):', err);
     }
   }
 
   // ── Cake Bookings → Order Type: "Cake Booking" ──
-  // Cake-specific info packed into the matching columns:
-  //   Ordered Items           → e.g. '6" Classic Vanilla Cake'
-  //   Additional Requirements → cake message + allergies
-  //   Address                 → Pickup or Delivery
-  //   Notes                   → time slot + email
   async function pushBookingToSheet() {
     const flavourEl   = document.getElementById('flavourSelect');
     const flavourName = flavourEl.options[flavourEl.selectedIndex].text.split('—')[0].trim();
@@ -1355,12 +1361,13 @@
     const cakeMsg     = document.getElementById('cakeMessage').value.trim();
     const allergies   = document.getElementById('bookNotes').value.trim();
     const extras      = [cakeMsg ? 'Message: ' + cakeMsg : '', allergies].filter(Boolean).join(' | ');
+    const id          = await getNextId('BK');
     try {
       const res = await fetch(SHEET_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data: [{
-          'Order #':                 generateId('BK'),
+          'Order #':                 id,
           'Order Date':              formatDate(new Date()),
           'Customer Name':           document.getElementById('bookName').value.trim(),
           'Contact':                 document.getElementById('bookPhone').value.trim(),
@@ -1375,7 +1382,7 @@
         }]})
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
-      console.log('✓ Cake booking saved');
+      console.log('✓ Cake booking saved as ' + id);
     } catch (err) {
       console.error('Sheet error (booking):', err);
     }
