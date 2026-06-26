@@ -3,36 +3,29 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Thye. — Vancouver Baked Goods</title>
-<style>
-@font-face {
-  font-family: 'Kaiyeluthu';
-  src: url('Kaiyeluthu-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-</style>
+<title>yazh. — Vancouver Baked Goods</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&family=Noto+Serif+Tamil:wght@300;400&display=swap" rel="stylesheet" />
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --cream: #ffffff;
-  --parchment: #f4f4ff;
+  --cream: #f5f5ff;
+  --parchment: #eeeeff;
   --yazh-blue: #3d3dbf;
-  --yazh-deep: #2a2a99;
+  --yazh-deep: #1a1a7a;
   --yazh-mid: #5252d4;
-  --yazh-light: #8888e0;
+  --yazh-light: #7b7be8;
   --yazh-pale: #c8c8f8;
-  --muted: #7070b8;
-  --text: #1a1a6e;
-  --card-bg: #ffffff;
+  --muted: #6b6ba8;
+  --text: #12123a;
+  --card-bg: #fafaff;
   --border: #d0d0f0;
 }
 html { scroll-behavior: smooth; }
 body {
-  background-color: #ffffff;
-  color: var(--yazh-blue);
-  font-family: 'Kaiyeluthu', cursive;
-  font-weight: 400;
+  background-color: var(--cream);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
   line-height: 1.7;
   overflow-x: hidden;
 }
@@ -53,7 +46,7 @@ nav {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(245, 245, 255, 0.92);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
   display: flex;
@@ -77,14 +70,13 @@ nav {
 }
 .nav-links a {
   text-decoration: none;
-  color: var(--yazh-blue);
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.1rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  color: var(--muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   transition: color 0.2s;
 }
-.nav-links a:hover { color: var(--yazh-deep); }
+.nav-links a:hover { color: var(--yazh-blue); }
 
 /* ── HERO ── */
 .hero {
@@ -94,7 +86,7 @@ nav {
   justify-content: center;
   text-align: center;
   padding: 6rem 2rem 4rem;
-  background: #ffffff;
+  background: linear-gradient(160deg, var(--parchment) 0%, var(--cream) 60%);
   position: relative;
   overflow: hidden;
 }
@@ -103,59 +95,59 @@ nav {
   position: absolute;
   bottom: -2px; left: 0; right: 0;
   height: 80px;
-  background: linear-gradient(to bottom, transparent, #ffffff);
+  background: linear-gradient(to bottom, transparent, var(--cream));
 }
 .hero-logo {
   display: block;
   margin: 0 auto 1.5rem;
-  height: 140px;
+  height: 120px;
   width: auto;
   animation: fadeUp 0.8s ease both;
 }
 .hero-badge {
   display: inline-block;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1rem;
-  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--yazh-blue);
-  border: 1.5px solid var(--yazh-blue);
+  border: 1px solid var(--yazh-blue);
   border-radius: 100px;
-  padding: 0.35rem 1.2rem;
+  padding: 0.4rem 1.2rem;
   margin-bottom: 0.75rem;
   animation: fadeUp 0.8s ease both;
 }
 .hero-badge-cert {
   display: inline-block;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1rem;
-  color: #4a7a1e;
-  border: 1.5px solid #7aaa3a;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5a7a2a;
+  border: 1px solid #7aaa3a;
   border-radius: 100px;
-  padding: 0.35rem 1.2rem;
+  padding: 0.4rem 1.2rem;
   margin-bottom: 1.5rem;
   margin-left: 0.5rem;
   background: #f0f7e6;
   animation: fadeUp 0.8s 0.05s ease both;
 }
 .hero h1 {
-  font-family: 'Kaiyeluthu', cursive;
-  font-weight: 600;
-  font-size: clamp(3.5rem, 9vw, 7rem);
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(3.2rem, 8vw, 6.5rem);
   line-height: 1.05;
-  color: var(--yazh-blue);
+  color: var(--yazh-deep);
   max-width: 800px;
   margin: 0 auto 1rem;
   animation: fadeUp 0.8s 0.1s ease both;
 }
 .hero h1 em {
   font-style: italic;
-  color: var(--yazh-deep);
+  color: var(--yazh-blue);
 }
 .hero-sub {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.6rem;
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.35rem;
   color: var(--muted);
-  max-width: 520px;
+  max-width: 500px;
   margin: 0 auto 2.5rem;
   animation: fadeUp 0.8s 0.2s ease both;
 }
@@ -171,35 +163,35 @@ nav {
 .btn-primary {
   background: var(--yazh-blue);
   color: #fff;
-  padding: 0.7rem 2rem;
+  padding: 0.85rem 2rem;
   border: none;
-  border-radius: 100px;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.2rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
   transition: background 0.2s, transform 0.15s;
 }
-.btn-primary:hover { background: var(--yazh-deep); transform: translateY(-2px); }
+.btn-primary:hover { background: var(--yazh-deep); transform: translateY(-1px); }
 .btn-outline {
   background: transparent;
   color: var(--yazh-blue);
-  padding: 0.7rem 2rem;
-  border: 2px solid var(--yazh-blue);
-  border-radius: 100px;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.2rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  padding: 0.85rem 2rem;
+  border: 1.5px solid var(--yazh-blue);
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
   transition: all 0.2s;
 }
-.btn-outline:hover { background: var(--yazh-blue); color: #fff; transform: translateY(-2px); }
+.btn-outline:hover { background: var(--yazh-blue); color: #fff; transform: translateY(-1px); }
 
 /* ── DECORATIVE DIVIDER ── */
 .divider {
@@ -212,26 +204,25 @@ nav {
 }
 
 /* ── SECTIONS ── */
-section { padding: 5rem 2rem; background: #ffffff; }
+section { padding: 5rem 2rem; }
 .section-label {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.05rem;
-  letter-spacing: 0.12em;
-  color: var(--yazh-light);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--yazh-mid);
   text-align: center;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 .section-title {
-  font-family: 'Kaiyeluthu', cursive;
-  font-weight: 700;
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
   text-align: center;
-  color: var(--yazh-blue);
-  margin-bottom: 0.4rem;
+  color: var(--yazh-deep);
+  margin-bottom: 0.5rem;
 }
 .section-sub {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.4rem;
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.15rem;
   color: var(--muted);
   text-align: center;
   max-width: 520px;
@@ -239,7 +230,7 @@ section { padding: 5rem 2rem; background: #ffffff; }
 }
 
 /* ── MENU ── */
-#menu { background: #ffffff; }
+#menu { background: var(--cream); }
 .menu-tabs {
   display: flex;
   justify-content: center;
@@ -249,14 +240,14 @@ section { padding: 5rem 2rem; background: #ffffff; }
 }
 .tab-btn {
   background: transparent;
-  border: 1.5px solid var(--border);
+  border: 1px solid var(--border);
   color: var(--muted);
-  padding: 0.4rem 1.3rem;
+  padding: 0.5rem 1.3rem;
   border-radius: 100px;
   cursor: pointer;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
   transition: all 0.2s;
 }
 .tab-btn:hover, .tab-btn.active {
@@ -272,16 +263,16 @@ section { padding: 5rem 2rem; background: #ffffff; }
   margin: 0 auto;
 }
 .menu-card {
-  background: #ffffff;
-  border: 1.5px solid var(--border);
-  border-radius: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 1.6rem;
   position: relative;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .menu-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 28px rgba(61,61,191,0.1);
+  box-shadow: 0 8px 24px rgba(61,61,191,0.1);
 }
 .menu-card .emoji {
   font-size: 2rem;
@@ -289,36 +280,34 @@ section { padding: 5rem 2rem; background: #ffffff; }
   display: block;
 }
 .menu-card h3 {
-  font-family: 'Kaiyeluthu', cursive;
-  font-weight: 700;
-  font-size: 1.4rem;
-  color: var(--yazh-blue);
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.15rem;
+  color: var(--yazh-deep);
   margin-bottom: 0.3rem;
 }
 .menu-card p {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.05rem;
+  font-size: 0.85rem;
   color: var(--muted);
   margin-bottom: 1rem;
   line-height: 1.5;
 }
 .menu-card .price {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.25rem;
   color: var(--yazh-blue);
+  font-weight: 400;
 }
 .badge {
   position: absolute;
   top: 1rem; right: 1rem;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 0.85rem;
-  letter-spacing: 0.04em;
-  padding: 0.2rem 0.8rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.7rem;
   border-radius: 100px;
 }
 .badge-book { background: #dddeff; color: var(--yazh-blue); }
-.badge-tomorrow { background: #e8f0d8; color: #4a7a1e; }
+.badge-tomorrow { background: #e8f0d8; color: #5a7a2a; }
 .badge-combo { background: #e8e8ff; color: var(--yazh-mid); }
 .badge-seasonal { background: #fde8f4; color: #a0357a; }
 
@@ -332,9 +321,9 @@ section { padding: 5rem 2rem; background: #ffffff; }
   margin: 0 auto;
 }
 .combo-card {
-  background: #ffffff;
-  border: 1.5px solid var(--border);
-  border-radius: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 2rem;
   position: relative;
   overflow: hidden;
@@ -347,15 +336,13 @@ section { padding: 5rem 2rem; background: #ffffff; }
   background: var(--yazh-blue);
 }
 .combo-card h3 {
-  font-family: 'Kaiyeluthu', cursive;
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: var(--yazh-blue);
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.2rem;
+  color: var(--yazh-deep);
   margin-bottom: 0.5rem;
 }
 .combo-items {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.05rem;
+  font-size: 0.85rem;
   color: var(--muted);
   margin-bottom: 1rem;
   line-height: 1.8;
@@ -366,34 +353,31 @@ section { padding: 5rem 2rem; background: #ffffff; }
   gap: 0.75rem;
 }
 .combo-price {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.5rem;
   color: var(--yazh-blue);
 }
 .combo-was {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.1rem;
+  font-size: 0.8rem;
   color: var(--muted);
   text-decoration: line-through;
 }
 .combo-save {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1rem;
+  font-size: 0.75rem;
   background: #dddeff;
   color: var(--yazh-blue);
-  padding: 0.1rem 0.7rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 100px;
 }
 
 /* ── ORDER SECTION ── */
-#order { background: #ffffff; }
+#order { background: var(--parchment); }
 .order-wrapper {
   max-width: 680px;
   margin: 0 auto;
-  background: #ffffff;
-  border: 1.5px solid var(--border);
-  border-radius: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
   padding: 2.5rem;
 }
 .order-items { margin-bottom: 1.5rem; }
@@ -408,45 +392,37 @@ section { padding: 5rem 2rem; background: #ffffff; }
 .order-item-info { flex: 1; }
 .order-item-info strong {
   display: block;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--yazh-blue);
+  font-size: 0.92rem;
+  color: var(--yazh-deep);
+  font-family: 'Instrument Serif', serif;
 }
-.order-item-info small {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1rem;
-  color: var(--muted);
-}
+.order-item-info small { font-size: 0.78rem; color: var(--muted); }
 .qty-control {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 .qty-btn {
-  width: 30px; height: 30px;
-  border: 1.5px solid var(--border);
-  background: #fff;
-  border-radius: 50%;
+  width: 28px; height: 28px;
+  border: 1px solid var(--border);
+  background: var(--cream);
+  border-radius: 4px;
   cursor: pointer;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: var(--yazh-blue);
   display: flex; align-items: center; justify-content: center;
   transition: all 0.15s;
 }
-.qty-btn:hover { background: var(--yazh-blue); color: #fff; border-color: var(--yazh-blue); }
+.qty-btn:hover { background: var(--yazh-blue); color: #fff; }
 .qty-num {
   width: 28px;
   text-align: center;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.1rem;
-  color: var(--yazh-blue);
+  font-size: 0.9rem;
+  color: var(--yazh-deep);
 }
 .item-subtotal {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.1rem;
   color: var(--yazh-blue);
   width: 60px;
   text-align: right;
@@ -459,23 +435,22 @@ section { padding: 5rem 2rem; background: #ffffff; }
   border-top: 2px solid var(--border);
 }
 .order-total-label {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.2rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--muted);
 }
 .order-total-price {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--yazh-blue);
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.6rem;
+  color: var(--yazh-deep);
 }
 .dispatch-note {
-  background: #eeeeff;
+  background: #e8e8ff;
   border-left: 3px solid var(--yazh-blue);
   padding: 0.8rem 1.1rem;
-  border-radius: 0 8px 8px 0;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.05rem;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.82rem;
   color: var(--yazh-deep);
   margin: 1.2rem 0;
 }
@@ -484,21 +459,22 @@ section { padding: 5rem 2rem; background: #ffffff; }
 }
 .form-group label {
   display: block;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.05rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.45rem;
 }
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  background: #ffffff;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
   color: var(--text);
   transition: border-color 0.2s;
   appearance: none;
@@ -512,25 +488,24 @@ section { padding: 5rem 2rem; background: #ffffff; }
 .success-msg {
   display: none;
   background: #eeeeff;
-  border: 1.5px solid var(--yazh-pale);
-  border-radius: 12px;
+  border: 1px solid var(--yazh-pale);
+  border-radius: 8px;
   padding: 1.2rem 1.5rem;
   margin-top: 1.5rem;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   color: var(--yazh-deep);
   text-align: center;
 }
 
 /* ── ABOUT ── */
 #about {
-  background: var(--yazh-blue);
-  color: #fff;
+  background: var(--yazh-deep);
+  color: var(--yazh-pale);
   text-align: center;
 }
 #about .section-label { color: var(--yazh-pale); }
 #about .section-title { color: #ffffff; }
-#about .section-sub { color: var(--yazh-pale); }
+#about .section-sub { color: var(--yazh-light); }
 .about-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -540,35 +515,32 @@ section { padding: 5rem 2rem; background: #ffffff; }
 }
 .about-item { text-align: center; }
 .about-icon {
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   margin-bottom: 0.8rem;
   display: block;
 }
 .about-item h4 {
-  font-family: 'Kaiyeluthu', cursive;
-  font-weight: 700;
-  font-size: 1.3rem;
+  font-family: 'Instrument Serif', serif;
+  font-size: 1rem;
   color: #ffffff;
   margin-bottom: 0.3rem;
 }
 .about-item p {
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.05rem;
-  color: var(--yazh-pale);
+  font-size: 0.82rem;
+  color: var(--yazh-light);
   line-height: 1.5;
 }
 
 /* ── FOOTER ── */
 footer {
-  background: var(--yazh-deep);
-  color: var(--yazh-pale);
+  background: #0d0d40;
+  color: var(--yazh-light);
   text-align: center;
   padding: 2rem;
-  font-family: 'Kaiyeluthu', cursive;
-  font-size: 1.05rem;
-  letter-spacing: 0.03em;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
 }
-footer a { color: #fff; text-decoration: none; }
+footer a { color: var(--yazh-pale); text-decoration: none; }
 
 /* ── ANIMATIONS ── */
 @keyframes fadeUp {
@@ -590,7 +562,7 @@ footer a { color: #fff; text-decoration: none; }
 <!-- NAV -->
 <nav>
   <span class="nav-logo">
-    <img src="Thye.png" alt="Thye." />
+    <img src="yazh.png" alt="yazh." />
   </span>
   <ul class="nav-links">
     <li><a href="#menu">Menu</a></li>
@@ -603,7 +575,7 @@ footer a { color: #fff; text-decoration: none; }
 <!-- HERO -->
 <section class="hero" id="home">
   <div>
-    <img src="Thye.png" alt="Thye." class="hero-logo" />
+    <img src="yazh.png" alt="yazh." class="hero-logo" />
     <span class="hero-badge">✦ Handcrafted in Vancouver, BC</span>
     <span class="hero-badge-cert">✓ Food Safe Certified</span>
     <h1>Baked with <em>love,</em><br>delivered with care.</h1>
@@ -1086,7 +1058,7 @@ footer a { color: #fff; text-decoration: none; }
 <section id="about">
   <p class="section-label">Our Story</p>
   <h2 class="section-title">Made with intention.</h2>
-  <p class="section-sub">Thye. is a home-based Vancouver bakery. Every item is handcrafted in small batches, made fresh for your order.</p>
+  <p class="section-sub">yazh. is a home-based Vancouver bakery. Every item is handcrafted in small batches, made fresh for your order.</p>
 
   <div class="about-grid">
     <div class="about-item">
@@ -1119,7 +1091,7 @@ footer a { color: #fff; text-decoration: none; }
 
 <!-- FOOTER -->
 <footer>
-  © 2025 Thye. · Vancouver, BC · <a href="mailto:thye.bakes@example.com">thye.bakes@example.com</a> · Made with 🤍
+  © 2025 yazh. · Vancouver, BC · <a href="mailto:yazh.bakes@example.com">yazh.bakes@example.com</a> · Made with 🤍
 </footer>
 
 <script>
