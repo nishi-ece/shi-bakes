@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Thye. — Vancouver Baked Goods</title>
+<style>
+@font-face {
+  font-family: 'Kaiyeluthu';
+  src: url('Kaiyeluthu-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+</style>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --cream: #ffffff;
+  --parchment: #f4f4ff;
+  --yazh-blue: #3d3dbf;
+  --yazh-deep: #2a2a99;
+  --yazh-mid: #5252d4;
+  --yazh-light: #8888e0;
+  --yazh-pale: #c8c8f8;
+  --muted: #7070b8;
+  --text: #1a1a6e;
+  --card-bg: #ffffff;
+  --border: #d0d0f0;
+}
+html { scroll-behavior: smooth; }
+body {
+  background-color: #ffffff;
+  color: var(--yazh-blue);
+  font-family: 'Kaiyeluthu', cursive;
+  font-weight: 400;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.5;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2.5rem;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.nav-logo img {
+  height: 42px;
+  width: auto;
+}
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--yazh-blue);
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--yazh-deep); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6rem 2rem 4rem;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, #ffffff);
+}
+.hero-logo {
+  display: block;
+  margin: 0 auto 1.5rem;
+  height: 140px;
+  width: auto;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-badge {
+  display: inline-block;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  color: var(--yazh-blue);
+  border: 1.5px solid var(--yazh-blue);
+  border-radius: 100px;
+  padding: 0.35rem 1.2rem;
+  margin-bottom: 0.75rem;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-badge-cert {
+  display: inline-block;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1rem;
+  color: #4a7a1e;
+  border: 1.5px solid #7aaa3a;
+  border-radius: 100px;
+  padding: 0.35rem 1.2rem;
+  margin-bottom: 1.5rem;
+  margin-left: 0.5rem;
+  background: #f0f7e6;
+  animation: fadeUp 0.8s 0.05s ease both;
+}
+.hero h1 {
+  font-family: 'Kaiyeluthu', cursive;
+  font-weight: 600;
+  font-size: clamp(3.5rem, 9vw, 7rem);
+  line-height: 1.05;
+  color: var(--yazh-blue);
+  max-width: 800px;
+  margin: 0 auto 1rem;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--yazh-deep);
+}
+.hero-sub {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.6rem;
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0 auto 2.5rem;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+.hero-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+/* ── BUTTONS ── */
+.btn-primary {
+  background: var(--yazh-blue);
+  color: #fff;
+  padding: 0.7rem 2rem;
+  border: none;
+  border-radius: 100px;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-primary:hover { background: var(--yazh-deep); transform: translateY(-2px); }
+.btn-outline {
+  background: transparent;
+  color: var(--yazh-blue);
+  padding: 0.7rem 2rem;
+  border: 2px solid var(--yazh-blue);
+  border-radius: 100px;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-outline:hover { background: var(--yazh-blue); color: #fff; transform: translateY(-2px); }
+
+/* ── DECORATIVE DIVIDER ── */
+.divider {
+  text-align: center;
+  color: var(--yazh-light);
+  font-size: 1.4rem;
+  letter-spacing: 0.4em;
+  margin: 0.5rem 0;
+  opacity: 0.7;
+}
+
+/* ── SECTIONS ── */
+section { padding: 5rem 2rem; background: #ffffff; }
+.section-label {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  color: var(--yazh-light);
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+.section-title {
+  font-family: 'Kaiyeluthu', cursive;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  text-align: center;
+  color: var(--yazh-blue);
+  margin-bottom: 0.4rem;
+}
+.section-sub {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.4rem;
+  color: var(--muted);
+  text-align: center;
+  max-width: 520px;
+  margin: 0 auto 3rem;
+}
+
+/* ── MENU ── */
+#menu { background: #ffffff; }
+.menu-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--muted);
+  padding: 0.4rem 1.3rem;
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.tab-btn:hover, .tab-btn.active {
+  background: var(--yazh-blue);
+  color: #fff;
+  border-color: var(--yazh-blue);
+}
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.menu-card {
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 1.6rem;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.menu-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(61,61,191,0.1);
+}
+.menu-card .emoji {
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+.menu-card h3 {
+  font-family: 'Kaiyeluthu', cursive;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--yazh-blue);
+  margin-bottom: 0.3rem;
+}
+.menu-card p {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+.menu-card .price {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--yazh-blue);
+}
+.badge {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.8rem;
+  border-radius: 100px;
+}
+.badge-book { background: #dddeff; color: var(--yazh-blue); }
+.badge-tomorrow { background: #e8f0d8; color: #4a7a1e; }
+.badge-combo { background: #e8e8ff; color: var(--yazh-mid); }
+.badge-seasonal { background: #fde8f4; color: #a0357a; }
+
+/* ── COMBOS ── */
+#combos { background: var(--parchment); }
+.combos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.combo-card {
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.combo-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  background: var(--yazh-blue);
+}
+.combo-card h3 {
+  font-family: 'Kaiyeluthu', cursive;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--yazh-blue);
+  margin-bottom: 0.5rem;
+}
+.combo-items {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+.combo-pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+.combo-price {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--yazh-blue);
+}
+.combo-was {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.1rem;
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.combo-save {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1rem;
+  background: #dddeff;
+  color: var(--yazh-blue);
+  padding: 0.1rem 0.7rem;
+  border-radius: 100px;
+}
+
+/* ── ORDER SECTION ── */
+#order { background: #ffffff; }
+.order-wrapper {
+  max-width: 680px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+}
+.order-items { margin-bottom: 1.5rem; }
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.order-item:last-child { border-bottom: none; }
+.order-item-info { flex: 1; }
+.order-item-info strong {
+  display: block;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--yazh-blue);
+}
+.order-item-info small {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1rem;
+  color: var(--muted);
+}
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.qty-btn {
+  width: 30px; height: 30px;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.2rem;
+  color: var(--yazh-blue);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.qty-btn:hover { background: var(--yazh-blue); color: #fff; border-color: var(--yazh-blue); }
+.qty-num {
+  width: 28px;
+  text-align: center;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.1rem;
+  color: var(--yazh-blue);
+}
+.item-subtotal {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--yazh-blue);
+  width: 60px;
+  text-align: right;
+}
+.order-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 0 0;
+  border-top: 2px solid var(--border);
+}
+.order-total-label {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.2rem;
+  color: var(--muted);
+}
+.order-total-price {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--yazh-blue);
+}
+.dispatch-note {
+  background: #eeeeff;
+  border-left: 3px solid var(--yazh-blue);
+  padding: 0.8rem 1.1rem;
+  border-radius: 0 8px 8px 0;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.05rem;
+  color: var(--yazh-deep);
+  margin: 1.2rem 0;
+}
+.form-group {
+  margin-bottom: 1.3rem;
+}
+.form-group label {
+  display: block;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: #ffffff;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.1rem;
+  color: var(--text);
+  transition: border-color 0.2s;
+  appearance: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--yazh-blue);
+}
+.success-msg {
+  display: none;
+  background: #eeeeff;
+  border: 1.5px solid var(--yazh-pale);
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  margin-top: 1.5rem;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.2rem;
+  color: var(--yazh-deep);
+  text-align: center;
+}
+
+/* ── ABOUT ── */
+#about {
+  background: var(--yazh-blue);
+  color: #fff;
+  text-align: center;
+}
+#about .section-label { color: var(--yazh-pale); }
+#about .section-title { color: #ffffff; }
+#about .section-sub { color: var(--yazh-pale); }
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.about-item { text-align: center; }
+.about-icon {
+  font-size: 2.4rem;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+.about-item h4 {
+  font-family: 'Kaiyeluthu', cursive;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #ffffff;
+  margin-bottom: 0.3rem;
+}
+.about-item p {
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.05rem;
+  color: var(--yazh-pale);
+  line-height: 1.5;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--yazh-deep);
+  color: var(--yazh-pale);
+  text-align: center;
+  padding: 2rem;
+  font-family: 'Kaiyeluthu', cursive;
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+}
+footer a { color: #fff; text-decoration: none; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 640px) {
+  nav { padding: 1rem 1.2rem; }
+  .nav-links { display: none; }
+  .order-wrapper { padding: 1.5rem; }
+  .hero-badge-cert { margin-left: 0; display: block; margin-top: 0.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">
+    <img src="Thye.png" alt="Thye." />
+  </span>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#combos">Combos</a></li>
+    <li><a href="#order">Order Now</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div>
+    <img src="Thye.png" alt="Thye." class="hero-logo" />
+    <span class="hero-badge">✦ Handcrafted in Vancouver, BC</span>
+    <span class="hero-badge-cert">✓ Food Safe Certified</span>
+    <h1>Baked with love,<br>delivered with care.</h1>
+    <p class="hero-sub">Small-batch cookies, brookies, tiramusù & more — made fresh to order in our home kitchen.</p>
+    <div class="hero-btns">
+      <a href="#order" class="btn-primary">Order Now</a>
+      <a href="#menu" class="btn-outline">Browse Menu</a>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <p class="section-label">What We Bake</p>
+  <h2 class="section-title">Our Menu</h2>
+  <p class="section-sub">Everything is made to order with quality ingredients and a whole lot of heart.</p>
+
+  <div class="menu-tabs">
+    <button class="tab-btn active" onclick="filterMenu('all', this)">All</button>
+    <button class="tab-btn" onclick="filterMenu('cookies', this)">Cookies & Bars</button>
+    <button class="tab-btn" onclick="filterMenu('cupcakes', this)">Cupcakes</button>
+    <button class="tab-btn" onclick="filterMenu('desserts', this)">Desserts</button>
+    <button class="tab-btn" onclick="filterMenu('savoury', this)">Savoury & Jams</button>
+  </div>
+
+  <div class="menu-grid" id="menuGrid">
+
+    <!-- COOKIES & BARS -->
+    <div class="menu-card" data-cat="cookies">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🍪</span>
+      <h3>Chocolate Chip Cookies</h3>
+      <p>Thick, buttery cookies loaded with dark chocolate chips — crispy edges, gooey centre. Box of 6.</p>
+      <span class="price">$12 / box of 6</span>
+    </div>
+
+    <div class="menu-card" data-cat="cookies">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🍫</span>
+      <h3>Crinkle Top Brookie</h3>
+      <p>The ultimate hybrid — fudgy brownie meets chewy cookie, with that gorgeous crinkled sugar crust. Box of 9 bars.</p>
+      <span class="price">$12 / box of 6</span>
+    </div>
+
+    <div class="menu-card" data-cat="cookies">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🟫</span>
+      <h3>Fudgy Brownies</h3>
+      <p>Dense, gooey dark chocolate brownies with a crackly top. Cut into 9 generous squares.</p>
+      <span class="price">$20 / 9 squares</span>
+    </div>
+
+    <div class="menu-card" data-cat="cookies">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🌟</span>
+      <h3>Blondies</h3>
+      <p>Golden brown sugar bars packed with toasted nuts and white chocolate chips. Chewy, caramel-rich and utterly addictive. Box of 9.</p>
+      <span class="price">$20 / 9 squares</span>
+    </div>
+
+    <!-- CUPCAKES -->
+    <div class="menu-card" data-cat="cupcakes">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🌾</span>
+      <h3>Oat Flour Cupcakes</h3>
+      <p>Tender oat flour cupcakes with honey cream cheese frosting. Nourishing and delicious. Box of 6.</p>
+      <span class="price">$28 / box of 6</span>
+    </div>
+
+    <div class="menu-card" data-cat="cupcakes">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🫐</span>
+      <h3>Berry Cupcakes</h3>
+      <p>Soft vanilla base loaded with mixed berries and topped with whipped berry buttercream. Box of 6.</p>
+      <span class="price">$18 / box of 6</span>
+    </div>
+
+    <!-- DESSERTS -->
+    <div class="menu-card" data-cat="desserts">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">☕</span>
+      <h3>Classic Tiramisu</h3>
+      <p>Espresso-soaked ladyfingers layered with silky mascarpone cream, dusted with rich cocoa. Ready to scoop and share.</p>
+      <div style="display:flex; gap:0.6rem; margin-bottom:0.8rem; flex-wrap:wrap;">
+        <div onclick="selectTiramisu(this,'tira','small',16,28)" style="flex:1;min-width:100px;border:1.5px solid var(--border);border-radius:8px;padding:0.7rem;text-align:center;cursor:pointer;transition:all 0.2s;" class="tira-option" data-key="tira">
+          <span style="font-family:'Instrument Serif',serif;font-size:1rem;color:var(--yazh-deep);">Small</span>
+          <div style="font-size:0.78rem;color:var(--muted);">250ml · 1–2 servings</div>
+          <div style="color:var(--yazh-blue);font-family:'Instrument Serif',serif;font-size:1.1rem;">$16</div>
+        </div>
+        <div onclick="selectTiramisu(this,'tira','medium',28,28)" style="flex:1;min-width:100px;border:1.5px solid var(--border);border-radius:8px;padding:0.7rem;text-align:center;cursor:pointer;transition:all 0.2s;" class="tira-option" data-key="tira">
+          <span style="font-family:'Instrument Serif',serif;font-size:1rem;color:var(--yazh-deep);">Medium</span>
+          <div style="font-size:0.78rem;color:var(--muted);">500ml · 3–4 servings</div>
+          <div style="color:var(--yazh-blue);font-family:'Instrument Serif',serif;font-size:1.1rem;">$28</div>
+        </div>
+      </div>
+      <span class="price" id="tiramisuPrice">Select a size above</span>
+    </div>
+
+    <div class="menu-card" data-cat="desserts">
+      <span class="badge badge-seasonal">Seasonal ✨</span>
+      <span class="emoji">🥭</span>
+      <h3>Mango Tiramisu</h3>
+      <p>A tropical twist — ripe alphonso mango cream layered with lightly soaked sponge and a hint of cardamom. Refreshing and dreamy.</p>
+      <div style="display:flex; gap:0.6rem; margin-bottom:0.8rem; flex-wrap:wrap;">
+        <div onclick="selectTiramisu(this,'mtira','small',18,30)" style="flex:1;min-width:100px;border:1.5px solid var(--border);border-radius:8px;padding:0.7rem;text-align:center;cursor:pointer;transition:all 0.2s;" class="mtira-option" data-key="mtira">
+          <span style="font-family:'Instrument Serif',serif;font-size:1rem;color:var(--yazh-deep);">Small</span>
+          <div style="font-size:0.78rem;color:var(--muted);">250ml · 1–2 servings</div>
+          <div style="color:var(--yazh-blue);font-family:'Instrument Serif',serif;font-size:1.1rem;">$18</div>
+        </div>
+        <div onclick="selectTiramisu(this,'mtira','medium',30,30)" style="flex:1;min-width:100px;border:1.5px solid var(--border);border-radius:8px;padding:0.7rem;text-align:center;cursor:pointer;transition:all 0.2s;" class="mtira-option" data-key="mtira">
+          <span style="font-family:'Instrument Serif',serif;font-size:1rem;color:var(--yazh-deep);">Medium</span>
+          <div style="font-size:0.78rem;color:var(--muted);">500ml · 3–4 servings</div>
+          <div style="color:var(--yazh-blue);font-family:'Instrument Serif',serif;font-size:1.1rem;">$30</div>
+        </div>
+      </div>
+      <span class="price" id="mangoTiramisuPrice">Select a size above</span>
+    </div>
+
+    <div class="menu-card" data-cat="desserts">
+      <span class="badge badge-book">Book Ahead</span>
+      <span class="emoji">🌸</span>
+      <h3>Rasmalai Tres Leches</h3>
+      <p>Airy sponge soaked in a rich three-milk blend, topped with saffron rasmalai cream and pistachios. A South Asian fusion showstopper.</p>
+      <span class="price">Small — $15 </span>
+    </div>
+
+    <!-- SAVOURY & JAMS -->
+    <div class="menu-card" data-cat="savoury">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🫓</span>
+      <h3>Focaccia</h3>
+      <p>Pillowy, olive-oil-drenched focaccia with flaky sea salt and rosemary. Seasonal toppings available — ask us what's fresh.</p>
+      <span class="price">Half slab — $14 &nbsp;|&nbsp; Full slab — $26</span>
+    </div>
+
+    <div class="menu-card" data-cat="savoury">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🥐</span>
+      <h3>Egg Puffs</h3>
+      <p>Flaky, golden puff pastry filled with a spiced egg and onion filling. A classic Kerala snack, baked fresh to order. Pack of 4.</p>
+      <span class="price">$16 / pack of 4</span>
+    </div>
+
+    <div class="menu-card" data-cat="savoury">
+      <span class="badge badge-tomorrow">Ships Tomorrow</span>
+      <span class="emoji">🍓</span>
+      <h3>Homemade Jams</h3>
+      <p>Small-batch jams made with local seasonal fruit and no artificial preservatives. Flavours rotate — check our latest before ordering.</p>
+      <span class="price">250ml jar — $12 &nbsp;|&nbsp; 500ml jar — $20</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMBOS -->
+<section id="combos">
+  <p class="section-label">Better Together</p>
+  <h2 class="section-title">Combo Deals</h2>
+  <p class="section-sub">Mix, match & save — perfect for gifting, events or treating yourself.</p>
+
+  <div class="combos-grid">
+
+    <div class="combo-card">
+      <span class="badge badge-combo" style="position:static;display:inline-block;margin-bottom:1rem;">🍫 Chocolate Lover</span>
+      <h3>The Choco Haul</h3>
+      <p class="combo-items">
+        ✦ 1 × Fudgy Brownie Box (9 squares)<br>
+        ✦ 1 × Crinkle Top Brookie Box (6)<br>
+        ✦ 1 × Box of Chocolate Chip Cookies (6)
+      </p>
+      <div class="combo-pricing">
+        <span class="combo-price">$39</span>
+        <span class="combo-was">$44</span>
+        <span class="combo-save">Save $5</span>
+      </div>
+    </div>
+
+    <div class="combo-card">
+      <span class="badge badge-combo" style="position:static;display:inline-block;margin-bottom:1rem;">☕ Dessert Night</span>
+      <h3>Tiramisu for Two</h3>
+      <p class="combo-items">
+        ✦ 1 × Classic Tiramisu — Medium<br>
+        ✦ 1 × Box of Chocolate Chip Cookies (6)
+      </p>
+      <div class="combo-pricing">
+        <span class="combo-price">$42</span>
+        <span class="combo-was">$46</span>
+        <span class="combo-save">Save $4</span>
+      </div>
+    </div>
+
+    <div class="combo-card">
+      <span class="badge badge-combo" style="position:static;display:inline-block;margin-bottom:1rem;">🧁 Cupcake Fiesta</span>
+      <h3>Double Cupcake Box</h3>
+      <p class="combo-items">
+        ✦ 1 × Box Berry Cupcakes (6)<br>
+        ✦ 1 × Box Oat Flour Cupcakes (6)
+      </p>
+      <div class="combo-pricing">
+        <span class="combo-price">$54</span>
+        <span class="combo-was">$62</span>
+        <span class="combo-save">Save $8</span>
+      </div>
+    </div>
+
+    <div class="combo-card">
+      <span class="badge badge-combo" style="position:static;display:inline-block;margin-bottom:1rem;">🎁 Gift Box</span>
+      <h3>The Shi's Sampler</h3>
+      <p class="combo-items">
+        ✦ 1 × Blondie Box (9 bars)<br>
+        ✦ 1 × Berry Cupcakes (6)<br>
+        ✦ 1 × Homemade Jam — 250ml
+      </p>
+      <div class="combo-pricing">
+        <span class="combo-price">$58</span>
+        <span class="combo-was">$66</span>
+        <span class="combo-save">Save $8</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!--
+=============================================================
+  CAKE BOOKING SECTION — COMMENTED OUT (coming soon)
+=============================================================
+
+<section id="booking">
+  <p class="section-label">Custom Cakes</p>
+  <h2 class="section-title">Book Your Cake</h2>
+  <p class="section-sub">We take up to 3 cake orders per day. Reserve your slot early — we sell out fast!</p>
+  ... booking form content ...
+</section>
+
+=============================================================
+-->
+
+<!-- ORDER -->
+<section id="order">
+  <p class="section-label">Order Today</p>
+  <h2 class="section-title">Quick Order</h2>
+  <p class="section-sub">Order your favourites today — dispatched tomorrow.</p>
+
+  <div class="order-wrapper">
+    <div class="dispatch-note">
+      📦 Orders placed before <strong>3 PM</strong> are dispatched the following day. You'll receive a confirmation email with your tracking info.
+    </div>
+
+    <div class="order-items" id="orderItems">
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Chocolate Chip Cookies</strong>
+          <small>Box of 6 · $18</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="18">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Crinkle Top Brookie</strong>
+          <small>9 bars · $28</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="28">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Fudgy Brownies</strong>
+          <small>9 squares · $24</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="24">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Blondies</strong>
+          <small>9 bars · $24</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="24">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Oat Flour Cupcakes</strong>
+          <small>Box of 6 · $32</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="32">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Berry Cupcakes</strong>
+          <small>Box of 6 · $30</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="30">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Classic Tiramisu — Small</strong>
+          <small>250ml · $16</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="16">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Classic Tiramisu — Medium</strong>
+          <small>500ml · $28</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="28">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Mango Tiramisu — Small</strong>
+          <small>250ml · $18</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="18">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Mango Tiramisu — Medium</strong>
+          <small>500ml · $30</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="30">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Focaccia — Half Slab</strong>
+          <small>$14</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="14">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Focaccia — Full Slab</strong>
+          <small>$26</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="26">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Egg Puffs</strong>
+          <small>Pack of 4 · $16</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="16">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Homemade Jam — 250ml</strong>
+          <small>$12</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="12">$0</span>
+      </div>
+
+      <div class="order-item">
+        <div class="order-item-info">
+          <strong>Homemade Jam — 500ml</strong>
+          <small>$20</small>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">0</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <span class="item-subtotal" data-price="20">$0</span>
+      </div>
+
+    </div>
+
+    <div class="order-total-row">
+      <span class="order-total-label">Order Total</span>
+      <span class="order-total-price" id="orderTotal">$0.00</span>
+    </div>
+
+    <div class="form-group" style="margin-top:1.5rem;">
+      <label>Your Name</label>
+      <input type="text" id="orderName" placeholder="Jane Smith" />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="orderEmail" placeholder="jane@example.com" />
+    </div>
+    <div class="form-group">
+      <label>Delivery Address (Vancouver)</label>
+      <input type="text" id="orderAddress" placeholder="123 Main St, Vancouver, BC" />
+    </div>
+    <div class="form-group">
+      <label>Allergies / Notes</label>
+      <textarea id="orderNotes" rows="3" placeholder="Any allergies or special requests..."></textarea>
+    </div>
+
+    <button class="btn-primary" style="width:100%;justify-content:center;" onclick="placeOrder()">Place Order →</button>
+
+    <div class="success-msg" id="orderSuccess">
+      ✅ Order received! You'll get a confirmation email soon. Your goodies are on their way tomorrow! 🍪
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">Our Story</p>
+  <h2 class="section-title">Made with intention.</h2>
+  <p class="section-sub">Thye. is a home-based Vancouver bakery. Every item is handcrafted in small batches, made fresh for your order.</p>
+
+  <div class="about-grid">
+    <div class="about-item">
+      <span class="about-icon">🌿</span>
+      <h4>Quality Ingredients</h4>
+      <p>We source local, seasonal produce and use real butter, real chocolate, and real love.</p>
+    </div>
+    <div class="about-item">
+      <span class="about-icon">✅</span>
+      <h4>Food Safe Certified</h4>
+      <p>Fully certified under BC's Food Safe program — so you can order with complete peace of mind.</p>
+    </div>
+    <div class="about-item">
+      <span class="about-icon">🤝</span>
+      <h4>Small Batch</h4>
+      <p>We limit orders to keep everything fresh and give every item the attention it deserves.</p>
+    </div>
+    <div class="about-item">
+      <span class="about-icon">📦</span>
+      <h4>Vancouver Made</h4>
+      <p>Proudly baked in Vancouver, BC. Local pickup and local delivery available.</p>
+    </div>
+    <div class="about-item">
+      <span class="about-icon">💬</span>
+      <h4>Custom Orders</h4>
+      <p>Want something special? We love custom flavour requests and dietary accommodations.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  © 2025 Thye. · Vancouver, BC · <a href="mailto:thye.bakes@example.com">thye.bakes@example.com</a> · Made with 🤍
+</footer>
+
+<script>
+  // ── MENU FILTER ──
+  function filterMenu(cat, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.menu-card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+    });
+  }
+
+  // ── TIRAMISU SIZE SELECTOR ──
+  function selectTiramisu(el, key, size, price) {
+    document.querySelectorAll('.' + key + '-option').forEach(o => {
+      o.style.borderColor = 'var(--border)';
+      o.style.background = '';
+    });
+    el.style.borderColor = 'var(--yazh-blue)';
+    el.style.background = '#dddeff';
+    const priceId = key === 'tira' ? 'tiramisuPrice' : 'mangoTiramisuPrice';
+    document.getElementById(priceId).textContent = '$' + price;
+  }
+
+  // ── ORDER QTY ──
+  function changeQty(btn, delta) {
+    const ctrl = btn.parentElement;
+    const numEl = ctrl.querySelector('.qty-num');
+    const row = ctrl.closest('.order-item');
+    const subtotalEl = row.querySelector('.item-subtotal');
+    const price = parseFloat(subtotalEl.dataset.price);
+    let qty = parseInt(numEl.textContent) + delta;
+    if (qty < 0) qty = 0;
+    numEl.textContent = qty;
+    subtotalEl.textContent = '$' + (qty * price).toFixed(0);
+    updateOrderTotal();
+  }
+
+  function updateOrderTotal() {
+    let total = 0;
+    document.querySelectorAll('.item-subtotal').forEach(el => {
+      total += parseFloat(el.textContent.replace('$','')) || 0;
+    });
+    document.getElementById('orderTotal').textContent = '$' + total.toFixed(2);
+  }
+
+  // ── PLACE ORDER ──
+  function placeOrder() {
+    const name = document.getElementById('orderName').value.trim();
+    const email = document.getElementById('orderEmail').value.trim();
+    if (!name || !email) { alert('Please enter your name and email.'); return; }
+    document.getElementById('orderSuccess').style.display = 'block';
+    document.getElementById('orderSuccess').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // ── SET MIN DATE ──
+  window.addEventListener('DOMContentLoaded', () => {
+    const today = new Date();
+    today.setDate(today.getDate() + 1);
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth()+1).padStart(2,'0');
+    const dd = String(today.getDate()).padStart(2,'0');
+  });
+</script>
+</body>
+</html>
