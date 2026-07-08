@@ -1,18 +1,20 @@
 const { Client } = require('@notionhq/client');
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
 const notion = new Client({ auth: process.env.NOTION_SECRET });
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD,
+  },
+});
 
 module.exports = async (req, res) => {
-  // Simple shared-secret check so random people can't spam this endpoint
   const secret = req.query.secret || req.headers['x-cron-secret'];
   if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) {
     return res.status(401).json({ error: 'Unauthorized' });
-  }
-
-  if (!resend) {
-    return res.status(500).json({ error: 'RESEND_API_KEY not configured' });
   }
 
   try {
@@ -42,8 +44,8 @@ module.exports = async (req, res) => {
       }
 
       try {
-        await resend.emails.send({
-          from: 'Thye Bakery <onboarding@resend.dev>',
+        await transporter.sendMail({
+          from: `"Thye. Bakery" <${process.env.GMAIL_USER}>`,
           to: customerEmail,
           subject: `Your Thye. order is confirmed! 🍪`,
           text:

@@ -1,8 +1,15 @@
 const { Client } = require('@notionhq/client');
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
 const notion = new Client({ auth: process.env.NOTION_SECRET });
-const resend = new Resend(process.env.RESEND_API_KEY);
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD,
+  },
+});
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -25,7 +32,6 @@ module.exports = async function handler(req, res) {
     .join(', ');
 
   try {
-    // Save order to Notion
     await notion.pages.create({
       parent: { database_id: process.env.NOTION_ORDERS_DB },
       properties: {
@@ -39,9 +45,8 @@ module.exports = async function handler(req, res) {
       }
     });
 
-    // Send notification email
-    await resend.emails.send({
-      from: 'Thye. Orders <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: `"Thye. Orders" <${process.env.GMAIL_USER}>`,
       to: process.env.NOTIFY_EMAIL,
       subject: `🍪 New order from ${name}!`,
       html: `

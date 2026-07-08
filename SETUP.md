@@ -93,3 +93,5 @@ your own custom domain there instead of pointing it at GitHub Pages.
   refresh the site. No code, no redeploy needed.
 - Add a new item → add a new row, set Category/Available/Sort → done.
 - Take something off the menu temporarily → uncheck Available.
+
+gmail_pwd: jujp zhvf zumm gsfz
