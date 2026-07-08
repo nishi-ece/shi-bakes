@@ -96,3 +96,5 @@ your own custom domain there instead of pointing it at GitHub Pages.
 
 gmail_pwd: jujp zhvf zumm gsfz
 jujpzhvfzummgsfz
+
+cron: https://shi-bakes.vercel.app/api/send-confirmations?secret=r8A1QeAvKczBy5sYmXnY
