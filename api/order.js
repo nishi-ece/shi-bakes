@@ -1,10 +1,10 @@
-import { Client } from '@notionhq/client';
-import { Resend } from 'resend';
+const { Client } = require('@notionhq/client');
+const { Resend } = require('resend');
 
 const notion = new Client({ auth: process.env.NOTION_SECRET });
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -16,9 +16,13 @@ export default async function handler(req, res) {
 
   const { name, email, address, items, total, notes } = req.body;
 
-  if (!name || !email || !items) {
+  if (!name || !email || !items || !Array.isArray(items) || !items.length) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
+
+  const itemsSummary = items
+    .map((i) => `${i.qty}x ${i.name} ($${(i.qty * i.price).toFixed(0)})`)
+    .join(', ');
 
   try {
     // Save order to Notion
@@ -28,7 +32,7 @@ export default async function handler(req, res) {
         Name: { title: [{ text: { content: name } }] },
         Email: { email },
         Address: { rich_text: [{ text: { content: address || '' } }] },
-        Items: { rich_text: [{ text: { content: items } }] },
+        Items: { rich_text: [{ text: { content: itemsSummary } }] },
         Total: { number: parseFloat(total) || 0 },
         Notes: { rich_text: [{ text: { content: notes || '' } }] },
         Status: { select: { name: 'New' } },
@@ -37,7 +41,7 @@ export default async function handler(req, res) {
 
     // Send notification email
     await resend.emails.send({
-      from: 'Thye. Orders <orders@resend.dev>',
+      from: 'Thye. Orders <onboarding@resend.dev>',
       to: process.env.NOTIFY_EMAIL,
       subject: `🍪 New order from ${name}!`,
       html: `
@@ -50,7 +54,7 @@ export default async function handler(req, res) {
             <tr><td style="padding:8px 0;color:#666">Total</td><td style="padding:8px 0;font-weight:600;color:#3d3dbf">$${total}</td></tr>
           </table>
           <h3 style="color:#3d3dbf;margin-top:20px">Items Ordered</h3>
-          <p style="white-space:pre-line;background:#f4f4ff;padding:16px;border-radius:8px">${items}</p>
+          <p style="white-space:pre-line;background:#f4f4ff;padding:16px;border-radius:8px">${itemsSummary}</p>
           ${notes ? `<h3 style="color:#3d3dbf">Notes</h3><p style="background:#f4f4ff;padding:16px;border-radius:8px">${notes}</p>` : ''}
           <p style="color:#999;font-size:12px;margin-top:32px">View all orders in your <a href="https://notion.so" style="color:#3d3dbf">Notion dashboard</a></p>
         </div>
@@ -62,4 +66,4 @@ export default async function handler(req, res) {
     console.error('Order error:', err);
     return res.status(500).json({ error: 'Failed to save order' });
   }
-}
+};
