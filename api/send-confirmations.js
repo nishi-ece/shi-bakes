@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
 
     for (const page of response.results) {
       const p = page.properties;
-      const customerEmail = p['Customer Email']?.email;
+      const customerEmail = p['Email']?.email;
       const customerName = p.Name?.title?.[0]?.plain_text || 'there';
       const items = p.Items?.rich_text?.[0]?.plain_text || '';
       const total = p.Total?.number ?? 0;
